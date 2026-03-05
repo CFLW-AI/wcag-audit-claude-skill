@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color-Only Information Failures</title>
+<!--
+GROUND TRUTH - Known WCAG 2.2 AA failures in this page:
+1. SC 1.4.1 FAIL: Links in paragraph are distinguished only by color (#0066cc) — no underline or other non-color indicator
+2. SC 1.4.1 FAIL: Required fields indicated only by red color (#d32f2f) label — no text "(required)" or asterisk with legend
+3. SC 1.4.1 FAIL: Status indicators use only color (green/yellow/red dots) — no text labels or icons
+4. SC 1.4.1 FAIL: Chart legend uses only colored squares — no patterns, labels, or accessible alternative
+5. SC 1.4.1 FAIL: Error state on input indicated only by red border — no icon or error text
+6. SC 1.4.3 FAIL: .success-text color #4caf50 on #ffffff = 3.03:1 (fails 4.5:1)
+7. SC 1.4.1 PASS: .badge uses both color AND text labels ("Active", "Pending") — should NOT be flagged for 1.4.1
+Total: 6 genuine failures, 1 should-pass item
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #ffffff; color: #1a1a1a; line-height: 1.6; }
+  .container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: 1.8rem; margin-bottom: 24px; }
+  h2 { font-size: 1.3rem; margin: 32px 0 12px; }
+  p { margin-bottom: 16px; }
+
+  /* FAIL: links with color only, no underline */
+  .content-area a {
+    color: #0066cc; text-decoration: none;
+  }
+
+  /* FAIL: required field label in red only */
+  .required-label { color: #d32f2f; }
+  .normal-label { color: #1a1a1a; }
+
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .form-group input {
+    width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px;
+  }
+  /* FAIL: error indicated only by red border */
+  .form-group input.error {
+    border-color: #d32f2f;
+  }
+
+  /* Status dots — FAIL: color only */
+  .status-list { list-style: none; margin: 16px 0; }
+  .status-list li { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+  .status-dot {
+    width: 12px; height: 12px; border-radius: 50%; display: inline-block;
+  }
+  .status-dot.green { background: #4caf50; }
+  .status-dot.yellow { background: #ff9800; }
+  .status-dot.red { background: #f44336; }
+
+  /* FAIL: chart legend with color squares only */
+  .chart-legend { display: flex; gap: 16px; margin: 16px 0; }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-swatch { width: 16px; height: 16px; border-radius: 2px; }
+
+  /* FAIL: success text with low contrast green */
+  .success-text { color: #4caf50; font-weight: 600; }
+
+  /* PASS: badges use color AND text labels */
+  .badge {
+    display: inline-block; padding: 4px 12px; border-radius: 12px;
+    font-size: 0.85rem; font-weight: 600;
+  }
+  .badge.active { background: #e8f5e9; color: #2e7d32; }
+  .badge.pending { background: #fff3e0; color: #e65100; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Project Dashboard</h1>
+
+  <h2>Overview</h2>
+  <!-- FAIL: links without underlines -->
+  <div class="content-area">
+    <p>Welcome to the project dashboard. You can view your tasks in the project tracker or check the latest updates in the changelog. For help, see the documentation.</p>
+  </div>
+
+  <h2>Team Members</h2>
+  <!-- FAIL: status dots are color-only -->
+  <ul class="status-list">
+    <li><span class="status-dot green"></span> Alice Johnson — Online</li>
+    <li><span class="status-dot yellow"></span> Bob Smith — Away</li>
+    <li><span class="status-dot red"></span> Carol White — Offline</li>
+    <li><span class="status-dot green"></span> Dave Brown — Online</li>
+  </ul>
+
+  <h2>Budget Breakdown</h2>
+  <!-- FAIL: chart legend with color squares only -->
+  <div class="chart-legend">
+    <div class="legend-item"><div class="legend-swatch" style="background:#4285f4;"></div> Engineering</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#ea4335;"></div> Marketing</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#fbbc05;"></div> Operations</div>
+    <div class="legend-item"><div class="legend-swatch" style="background:#34a853;"></div> Sales</div>
+  </div>
+  <p class="success-text">Budget is on track for Q1.</p>
+
+  <h2>Quick Form</h2>
+  <form>
+    <!-- FAIL: required indicated only by red color -->
+    <div class="form-group">
+      <label for="project-name" class="required-label">Project Name</label>
+      <input type="text" id="project-name" name="project-name">
+    </div>
+    <div class="form-group">
+      <label for="description" class="normal-label">Description</label>
+      <input type="text" id="description" name="description">
+    </div>
+    <!-- FAIL: error state indicated only by red border -->
+    <div class="form-group">
+      <label for="deadline" class="required-label">Deadline</label>
+      <input type="text" id="deadline" name="deadline" class="error" value="not a date">
+    </div>
+  </form>
+
+  <h2>Active Projects</h2>
+  <!-- PASS: badges use both color and text -->
+  <p>
+    <span class="badge active">Active</span>
+    Website Redesign — due March 15
+  </p>
+  <p>
+    <span class="badge pending">Pending</span>
+    Mobile App v2 — awaiting approval
+  </p>
+</div>
+</body>
+</html>

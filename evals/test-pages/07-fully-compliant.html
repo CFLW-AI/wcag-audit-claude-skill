@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fully Compliant Page — False Positive Test</title>
+<!--
+GROUND TRUTH - This page should PASS all WCAG 2.2 AA criteria.
+Any issue reported is a FALSE POSITIVE.
+
+Design choices that could trick a naive auditor:
+- Dark theme (white text on dark background) — contrast is fine
+- Custom focus styles (not default browser outline) — still visible
+- Small-looking buttons that are actually 44px+ targets
+- Inline links in paragraphs — exempt from SC 2.5.8
+- Decorative images with alt="" — correct
+- aria-label on icon buttons — proper accessible names
+- Skip navigation link — correct implementation
+- Responsive meta tag present
+- lang="en" on html element
+
+Expected result: 0 failures, 0 warnings about the items above
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #1a1a2e; color: #e0e0e0; line-height: 1.7;
+  }
+  a { color: #64b5f6; text-decoration: underline; }
+  a:hover { color: #90caf9; }
+
+  /* Skip navigation */
+  .skip-link {
+    position: absolute; top: -40px; left: 0;
+    background: #ffffff; color: #1a1a2e; padding: 8px 16px;
+    z-index: 100; font-weight: 600;
+  }
+  .skip-link:focus { top: 0; }
+
+  .container { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+
+  /* Navigation */
+  nav { background: #16213e; padding: 16px 24px; }
+  nav ul { list-style: none; display: flex; gap: 24px; }
+  nav a { color: #e0e0e0; text-decoration: none; padding: 8px 4px; font-weight: 500; }
+  nav a:hover, nav a:focus { color: #ffffff; text-decoration: underline; }
+
+  h1 { font-size: 2rem; margin-bottom: 16px; color: #ffffff; }
+  h2 { font-size: 1.4rem; margin: 32px 0 12px; color: #f0f0f0; }
+  h3 { font-size: 1.1rem; margin: 20px 0 8px; color: #e8e8e8; }
+  p { margin-bottom: 16px; }
+
+  /* Buttons — all meet 44px minimum (exceeds 24px SC 2.5.8 requirement) */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px; padding: 12px 24px;
+    background: #0f3460; color: #ffffff; border: 2px solid #1a5276;
+    border-radius: 8px; cursor: pointer; font-size: 1rem; font-weight: 500;
+  }
+  .btn:hover { background: #1a5276; }
+
+  .icon-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: #0f3460; color: #ffffff; border: 2px solid #1a5276;
+    border-radius: 8px; cursor: pointer; font-size: 1.2rem;
+  }
+
+  /* Custom focus styles — high contrast, clearly visible */
+  :focus-visible {
+    outline: 3px solid #ffd700;
+    outline-offset: 2px;
+  }
+
+  /* Form */
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 6px; color: #e0e0e0; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 12px; border: 2px solid #4a4a6a; border-radius: 6px;
+    background: #16213e; color: #e0e0e0; font-size: 1rem;
+  }
+  .form-group input::placeholder { color: #8888aa; }
+
+  .required-text { font-size: 0.85rem; color: #cccccc; margin-bottom: 16px; }
+
+  /* Card */
+  .card {
+    background: #16213e; border: 1px solid #2a2a4a; border-radius: 12px;
+    padding: 24px; margin: 16px 0;
+  }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #2a2a4a; }
+  th { background: #16213e; color: #ffffff; font-weight: 600; }
+  caption { text-align: left; font-weight: 600; margin-bottom: 8px; font-size: 1.1rem; color: #f0f0f0; }
+
+  footer { background: #16213e; padding: 24px; text-align: center; margin-top: 48px; color: #aaaacc; }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Main navigation">
+  <ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="/about">About</a></li>
+    <li><a href="/services">Services</a></li>
+    <li><a href="/contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+<div class="container">
+  <h1>Welcome to Our Accessible Site</h1>
+  <p>This page demonstrates proper accessibility practices. You can read our <a href="/guidelines">accessibility guidelines</a> or visit our <a href="/help">help center</a> for more information about our commitment to inclusive design.</p>
+
+  <!-- Decorative image with correct empty alt -->
+  <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='6' fill='%232a2a4a'%3E%3Crect width='700' height='6' rx='3'/%3E%3C/svg%3E" alt="" role="presentation">
+
+  <h2>Our Services</h2>
+  <div class="card">
+    <h3>Consulting</h3>
+    <p>We provide expert consulting services to help organizations meet accessibility standards. Our team has over 10 years of experience with WCAG compliance.</p>
+    <button class="btn">Learn More About Consulting</button>
+  </div>
+
+  <div class="card">
+    <h3>Training</h3>
+    <p>Our training programs cover everything from basic accessibility awareness to advanced ARIA implementation techniques.</p>
+    <button class="btn">View Training Programs</button>
+  </div>
+
+  <h2>Quick Actions</h2>
+  <p>Use the buttons below to manage your preferences:</p>
+  <div style="display:flex; gap:12px; margin:16px 0;">
+    <button class="icon-btn" aria-label="Bookmark this page">🔖</button>
+    <button class="icon-btn" aria-label="Share this page">↗</button>
+    <button class="icon-btn" aria-label="Print this page">🖨</button>
+  </div>
+
+  <h2>Pricing Overview</h2>
+  <table>
+    <caption>Service pricing for 2026</caption>
+    <thead>
+      <tr>
+        <th scope="col">Service</th>
+        <th scope="col">Duration</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Basic Audit</td>
+        <td>1 week</td>
+        <td>$2,500</td>
+      </tr>
+      <tr>
+        <td>Full Audit</td>
+        <td>3 weeks</td>
+        <td>$7,500</td>
+      </tr>
+      <tr>
+        <td>Training Workshop</td>
+        <td>2 days</td>
+        <td>$1,200</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Contact Us</h2>
+  <p class="required-text">Fields marked with (required) must be filled out.</p>
+  <form>
+    <fieldset style="border:none; padding:0;">
+      <legend style="font-weight:600; font-size:1.2rem; margin-bottom:12px; color:#f0f0f0;">Send us a message</legend>
+      <div class="form-group">
+        <label for="contact-name">Your Name (required)</label>
+        <input type="text" id="contact-name" name="name" required aria-required="true">
+      </div>
+      <div class="form-group">
+        <label for="contact-email">Email Address (required)</label>
+        <input type="email" id="contact-email" name="email" required aria-required="true" placeholder="you@example.com">
+      </div>
+      <div class="form-group">
+        <label for="contact-subject">Subject</label>
+        <select id="contact-subject" name="subject">
+          <option value="">Choose a topic</option>
+          <option value="audit">Accessibility Audit</option>
+          <option value="training">Training Inquiry</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="contact-message">Message (required)</label>
+        <textarea id="contact-message" name="message" rows="5" required aria-required="true"></textarea>
+      </div>
+      <button type="submit" class="btn">Send Message</button>
+    </fieldset>
+  </form>
+</div>
+</main>
+
+<footer>
+  <p>&copy; 2026 Accessible Services Inc. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Accessibility Failures</title>
+<!--
+GROUND TRUTH - Known WCAG 2.2 AA failures in this page:
+1. SC 1.3.1 FAIL: Email input has no <label> element or aria-label — only placeholder text
+2. SC 1.3.1 FAIL: Radio group has no fieldset/legend or group label
+3. SC 3.3.2 FAIL: Phone input has no label and no instructions for expected format
+4. SC 3.3.1 FAIL: Error messages are not programmatically associated with their inputs (no aria-describedby)
+5. SC 1.3.1 FAIL: Required fields indicated only by color (red asterisk) with no text or aria-required
+6. SC 4.1.2 FAIL: Custom select (div-based dropdown) has no role, aria-expanded, or keyboard support
+7. SC 1.4.3 FAIL: Placeholder text #bbbbbb on #ffffff = 1.91:1 contrast ratio (fails 4.5:1)
+Total: 7 genuine failures
+-->
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #ffffff; color: #1a1a1a; line-height: 1.6; }
+  .container { max-width: 600px; margin: 0 auto; padding: 40px 20px; }
+  h1 { font-size: 1.8rem; margin-bottom: 24px; }
+  h2 { font-size: 1.3rem; margin: 32px 0 12px; }
+
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 10px; border: 1px solid #cccccc; border-radius: 6px; font-size: 1rem;
+  }
+  /* FAIL: placeholder color too light */
+  .form-group input::placeholder { color: #bbbbbb; }
+
+  /* Required indicator — FAIL: only color, no text */
+  .required-star { color: #ff0000; font-weight: bold; }
+
+  .error-msg { color: #d32f2f; font-size: 0.85rem; margin-top: 4px; }
+
+  /* Custom dropdown — FAIL: no ARIA roles */
+  .custom-select { position: relative; width: 100%; }
+  .custom-select-trigger {
+    padding: 10px; border: 1px solid #cccccc; border-radius: 6px;
+    background: #ffffff; cursor: pointer; font-size: 1rem;
+  }
+  .custom-select-options {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    border: 1px solid #cccccc; border-top: none; background: #ffffff; z-index: 10;
+  }
+  .custom-select-options.open { display: block; }
+  .custom-select-option { padding: 10px; cursor: pointer; }
+  .custom-select-option:hover { background: #f0f0f0; }
+
+  .submit-btn {
+    padding: 12px 32px; background: #0066cc; color: #ffffff;
+    border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Registration Form</h1>
+
+  <form novalidate>
+    <!-- Good: has proper label -->
+    <div class="form-group">
+      <label for="fullname">Full Name <span class="required-star">*</span></label>
+      <input type="text" id="fullname" name="fullname">
+    </div>
+
+    <!-- FAIL: no label, only placeholder -->
+    <div class="form-group">
+      <input type="email" placeholder="Enter your email address">
+    </div>
+
+    <!-- FAIL: no label and no format instructions -->
+    <div class="form-group">
+      <input type="tel" placeholder="Phone number">
+    </div>
+
+    <!-- FAIL: error not associated with input -->
+    <div class="form-group">
+      <label for="password">Password <span class="required-star">*</span></label>
+      <input type="password" id="password" name="password">
+      <div class="error-msg">Password must be at least 8 characters</div>
+    </div>
+
+    <!-- FAIL: radio group with no fieldset/legend -->
+    <div class="form-group">
+      <p style="font-weight:600; margin-bottom:8px;">Account Type <span class="required-star">*</span></p>
+      <div>
+        <input type="radio" name="acct" id="personal" value="personal">
+        <label for="personal">Personal</label>
+      </div>
+      <div>
+        <input type="radio" name="acct" id="business" value="business">
+        <label for="business">Business</label>
+      </div>
+    </div>
+
+    <!-- FAIL: custom select with no ARIA -->
+    <div class="form-group">
+      <label>Country</label>
+      <div class="custom-select">
+        <div class="custom-select-trigger" onclick="this.nextElementSibling.classList.toggle('open')">
+          Select a country
+        </div>
+        <div class="custom-select-options">
+          <div class="custom-select-option">United States</div>
+          <div class="custom-select-option">Canada</div>
+          <div class="custom-select-option">United Kingdom</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Good: proper label and association -->
+    <div class="form-group">
+      <label for="bio">Short Bio</label>
+      <textarea id="bio" name="bio" rows="4"></textarea>
+    </div>
+
+    <button type="submit" class="submit-btn">Create Account</button>
+  </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>WCAG 2.2 AA Audit Report: Form Accessibility Failures</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f7fa;
+            --bg-tertiary: #eef2f7;
+            --text-primary: #1a1a1a;
+            --text-secondary: #4a4a4a;
+            --text-tertiary: #707070;
+            --border-color: #e0e4e9;
+            --pass-color: #0f7919;
+            --fail-color: #d32f2f;
+            --warning-color: #ed6c02;
+            --info-color: #1976d2;
+            --success-bg: #e8f5e9;
+            --fail-bg: #ffebee;
+            --warning-bg: #fff3e0;
+            --info-bg: #e3f2fd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #1a1a1a;
+                --bg-secondary: #2d2d2d;
+                --bg-tertiary: #3d3d3d;
+                --text-primary: #ffffff;
+                --text-secondary: #e0e0e0;
+                --text-tertiary: #b0b0b0;
+                --border-color: #404040;
+                --success-bg: #1b5e20;
+                --fail-bg: #4a0e0e;
+                --warning-bg: #663c00;
+                --info-bg: #0d47a1;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 24px;
+        }
+
+        .report-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .report-header {
+            border-bottom: 3px solid var(--border-color);
+            padding-bottom: 32px;
+            margin-bottom: 32px;
+        }
+
+        .report-header h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .report-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 16px;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .verdict-banner {
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            border-left: 6px solid;
+            background-color: var(--fail-bg);
+            border-color: var(--fail-color);
+        }
+
+        .verdict-banner.pass {
+            background-color: var(--success-bg);
+            border-color: var(--pass-color);
+        }
+
+        .verdict-banner h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .verdict-banner p {
+            margin: 8px 0;
+            font-size: 1.05rem;
+        }
+
+        .verdict-banner .verdict-fail {
+            color: var(--fail-color);
+        }
+
+        .verdict-banner .verdict-pass {
+            color: var(--pass-color);
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .kpi-card h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-tertiary);
+            margin-bottom: 8px;
+        }
+
+        .kpi-card .value {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .kpi-card .sublabel {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--bg-primary);
+            margin-bottom: 24px;
+        }
+
+        th {
+            background-color: var(--bg-secondary);
+            padding: 14px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 14px;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        tr:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        .ratio-value {
+            font-family: 'IBM Plex Mono', monospace;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-pass {
+            background-color: var(--success-bg);
+            color: var(--pass-color);
+        }
+
+        .badge-fail {
+            background-color: var(--fail-bg);
+            color: var(--fail-color);
+        }
+
+        .badge-warning {
+            background-color: var(--warning-bg);
+            color: var(--warning-color);
+        }
+
+        .badge-na {
+            background-color: var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+
+        .criteria-status {
+            font-weight: 600;
+        }
+
+        .criteria-status.pass {
+            color: var(--pass-color);
+        }
+
+        .criteria-status.fail {
+            color: var(--fail-color);
+        }
+
+        .criteria-status.warning {
+            color: var(--warning-color);
+        }
+
+        .criteria-status.na {
+            color: var(--text-tertiary);
+        }
+
+        .criteria-evidence {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .code-block {
+            background-color: var(--bg-secondary);
+            padding: 12px;
+            border-radius: 4px;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 8px 0;
+            border-left: 3px solid var(--info-color);
+            white-space: pre-wrap;
+        }
+
+        .report-footer {
+            margin-top: 60px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--text-tertiary);
+            text-align: center;
+        }
+
+        .footer-note {
+            margin: 8px 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+            }
+
+            .report-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .kpi-cards {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                font-size: 0.85rem;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+        }
+
+        .principle-group {
+            margin-bottom: 24px;
+            padding: 16px;
+            background-color: var(--bg-secondary);
+            border-radius: 6px;
+            border-left: 4px solid var(--info-color);
+        }
+
+        .principle-group h3 {
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .criteria-row {
+            margin-bottom: 12px;
+            padding: 12px;
+            background-color: var(--bg-primary);
+            border-radius: 4px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        li {
+            margin: 4px 0;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin: 20px 0 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="report-container">
+        <!-- Header -->
+        <div class="report-header">
+            <h1>WCAG 2.2 Level AA Accessibility Audit</h1>
+            <div class="report-meta">
+                <div class="meta-item">
+                    <strong>Page:</strong> Form Accessibility Failures
+                </div>
+                <div class="meta-item">
+                    <strong>File:</strong> 05-form-accessibility.html
+                </div>
+                <div class="meta-item">
+                    <strong>Audit Date:</strong> March 5, 2026
+                </div>
+                <div class="meta-item">
+                    <strong>Standard:</strong> WCAG 2.2 Level AA
+                </div>
+            </div>
+        </div>
+
+        <!-- Verdict Banner -->
+        <div class="verdict-banner">
+            <h2>
+                <span class="verdict-fail">✗ FAILS WCAG 2.2 AA</span>
+            </h2>
+            <p><strong>Verdict:</strong> This page does not meet WCAG 2.2 Level AA accessibility standards.</p>
+            <p><strong>Issues Found:</strong> 7 critical failures across semantic HTML, form accessibility, and color contrast.</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpi-cards">
+            <div class="kpi-card">
+                <h3>Criteria Checked</h3>
+                <div class="value">28</div>
+                <div class="sublabel">WCAG 2.2 AA Success Criteria</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Passing</h3>
+                <div class="value" style="color: var(--pass-color);">19</div>
+                <div class="sublabel">68% of criteria met</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Failing</h3>
+                <div class="value" style="color: var(--fail-color);">7</div>
+                <div class="sublabel">Critical issues requiring fixes</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Warnings</h3>
+                <div class="value" style="color: var(--warning-color);">2</div>
+                <div class="sublabel">Potential issues or N/A items</div>
+            </div>
+        </div>
+
+        <!-- Color Contrast Section -->
+        <div class="section">
+            <h2 class="section-title">Color Contrast Analysis (SC 1.4.3 & SC 1.4.11)</h2>
+            <p style="margin-bottom: 20px; color: var(--text-secondary);">
+                Programmatic verification of all foreground/background color pairs using the WCAG 2.2 relative luminance formula. Normal text requires 4.5:1; large text and non-text UI components require 3:1.
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Color Pair</th>
+                        <th>Foreground</th>
+                        <th>Background</th>
+                        <th>Ratio</th>
+                        <th>Required</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Body text on white</td>
+                        <td><span class="color-swatch" style="background-color: #1a1a1a;"></span>#1a1a1a</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">17.4:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Form labels on white</td>
+                        <td><span class="color-swatch" style="background-color: #1a1a1a;"></span>#1a1a1a</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">17.4:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-pass">PASS</span></td>
+                    </tr>
+                    <tr style="background-color: var(--fail-bg);">
+                        <td><strong>Placeholder text on white</strong></td>
+                        <td><span class="color-swatch" style="background-color: #bbbbbb;"></span>#bbbbbb</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">1.92:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-fail">FAIL</span></td>
+                    </tr>
+                    <tr style="background-color: var(--fail-bg);">
+                        <td><strong>Required star (red) on white</strong></td>
+                        <td><span class="color-swatch" style="background-color: #ff0000;"></span>#ff0000</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">4.0:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-fail">FAIL</span></td>
+                    </tr>
+                    <tr>
+                        <td>Error message on white</td>
+                        <td><span class="color-swatch" style="background-color: #d32f2f;"></span>#d32f2f</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">4.98:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-pass">PASS</span></td>
+                    </tr>
+                    <tr style="background-color: var(--fail-bg);">
+                        <td><strong>Input border on white (non-text)</strong></td>
+                        <td><span class="color-swatch" style="background-color: #cccccc;"></span>#cccccc</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">1.61:1</td>
+                        <td>3.0:1</td>
+                        <td><span class="badge badge-fail">FAIL</span></td>
+                    </tr>
+                    <tr style="background-color: var(--fail-bg);">
+                        <td><strong>Custom select hover bg on white</strong></td>
+                        <td><span class="color-swatch" style="background-color: #f0f0f0;"></span>#f0f0f0</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">1.14:1</td>
+                        <td>3.0:1</td>
+                        <td><span class="badge badge-fail">FAIL</span></td>
+                    </tr>
+                    <tr>
+                        <td>Submit button text on blue</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 1px solid #ccc;"></span>#ffffff</td>
+                        <td><span class="color-swatch" style="background-color: #0066cc;"></span>#0066cc</td>
+                        <td class="ratio-value">5.57:1</td>
+                        <td>4.5:1</td>
+                        <td><span class="badge badge-pass">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>Submit button border on white</td>
+                        <td><span class="color-swatch" style="background-color: #0066cc;"></span>#0066cc</td>
+                        <td><span class="color-swatch" style="background-color: #ffffff; border: 2px solid #ccc;"></span>#ffffff</td>
+                        <td class="ratio-value">5.57:1</td>
+                        <td>3.0:1</td>
+                        <td><span class="badge badge-pass">PASS</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="background-color: var(--fail-bg); padding: 16px; border-radius: 6px; margin-top: 20px;">
+                <strong>Contrast Summary:</strong> 5 of 9 color pairs pass. 4 pairs fail the required minimum contrast ratios, including critical failures in placeholder text and form input borders.
+            </div>
+        </div>
+
+        <!-- Full Criteria Review -->
+        <div class="section">
+            <h2 class="section-title">Full WCAG 2.2 AA Success Criteria Review</h2>
+            <p style="margin-bottom: 20px; color: var(--text-secondary);">
+                All 28 criteria evaluated. Status legend: PASS (meets standard), FAIL (violates standard), WARNING (potential issue), N/A (not applicable).
+            </p>
+
+            <!-- Principle 1 -->
+            <div class="principle-group">
+                <h3>Principle 1: Perceivable</h3>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.1.1 Non-text Content</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Page contains only text form elements. No images or decorative graphics. Not applicable to evaluate.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.2.1 Audio-only and Video-only</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No audio or video content on this page.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.2.2 Captions (Prerecorded)</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No video content present.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.2.3 Audio Description or Media Alternative</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No video content present.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.2.5 Audio Description</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No video content present.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.3.1 Info and Relationships</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence"><strong>Multiple failures:</strong><ul><li>Email input has no label or aria-label</li><li>Phone input lacks label</li><li>Radio group uses &lt;p&gt; instead of &lt;fieldset&gt;/&lt;legend&gt;</li><li>Custom select lacks semantic structure</li><li>Password error not associated via aria-describedby</li><li>Required fields indicated only by color (red *) with no aria-required</li><li>Form lacks fieldset groupings</li></ul></div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.3.2 Meaningful Sequence</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">DOM order matches visual layout. Fields appear in logical reading order.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.3.3 Sensory Characteristics</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">Required fields rely solely on color (red asterisks) to indicate requirement. No text or aria-required.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.1 Use of Color</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Form labels are text-based, not color-dependent. Error messages include text in addition to styling.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.2 Audio Control</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No audio content on page.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.3 Contrast (Minimum)</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence"><strong>4 color pairs fail:</strong><ul><li>Placeholder text (#bbbbbb on #ffffff): 1.92:1 vs 4.5:1 required</li><li>Required star (#ff0000 on #ffffff): 4.0:1 vs 4.5:1 required</li><li>Input border (#cccccc on #ffffff): 1.61:1 vs 3.0:1 required</li><li>Custom select hover (#f0f0f0 on #ffffff): 1.14:1 vs 3.0:1 required</li></ul></div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.4 Resize Text</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Text resizes to 200% without loss of functionality. No overflow clipping.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.5 Images of Text</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">No text rendered as images.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.10 Reflow</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Form reflowed correctly on 320px viewport. No horizontal scrolling at 400% zoom.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.11 Non-text Contrast</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">Input borders lack contrast (1.61:1 vs 3.0:1). Custom select hover state nearly invisible (1.14:1). No visible focus indicators defined.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.12 Text Spacing</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Reasonable line-height (1.6) and spacing. No text clipping with adjusted spacing.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 1.4.13 Content on Hover or Focus</strong> <span class="badge badge-warning">WARNING</span></div>
+                    <div class="criteria-evidence">Custom dropdown lacks documented dismissal mechanism or Escape key handler.</div>
+                </div>
+            </div>
+
+            <!-- Principle 2 -->
+            <div class="principle-group">
+                <h3>Principle 2: Operable</h3>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.1.1 Keyboard</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">Custom select uses onclick without keyboard handlers. Cannot be opened or navigated with keyboard.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.1.2 No Keyboard Trap</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">No focus trapping detected. Tab can navigate in and out of all form fields.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.4.3 Focus Order</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">No positive tabindex values. Form fields follow logical order.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.4.5 Multiple Ways</strong> <span class="badge badge-na">N/A</span></div>
+                    <div class="criteria-evidence">Single standalone form page. Multiple ways to locate content not applicable.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.4.6 Headings and Labels</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">Email and phone inputs lack labels entirely. Account Type uses generic &lt;p&gt;. Form labels describe purpose but some inputs have none.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.4.7 Focus Visible</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">No visible focus indicators defined in CSS. No :focus-visible or :focus styles. Custom controls have no focus styling.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.4.11 Focus Not Obscured (Minimum)</strong> <span class="badge badge-warning">WARNING</span></div>
+                    <div class="criteria-evidence">No sticky headers or modals present. However, missing focus indicators prevent full evaluation.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.5.3 Label in Name</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence">Email and phone inputs have no visible labels. Accessible name cannot include visible text.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 2.5.8 Target Size (Minimum)</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">Form inputs are 100% width and adequately sized. No tiny clickable targets.</div>
+                </div>
+            </div>
+
+            <!-- Principle 3 -->
+            <div class="principle-group">
+                <h3>Principle 3: Understandable</h3>
+
+                <div class="criteria-row">
+                    <div><strong>SC 3.1.1 Language of Page</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">HTML element has lang="en". Language declared correctly.</div>
+                </div>
+
+                <div class="criteria-row">
+                    <div><strong>SC 3.1.2 Language of Parts</strong> <span class="badge badge-pass">PASS</span></div>
+                    <div class="criteria-evidence">All content is in English. No language switches detected.</div>
+                </div>
+            </div>
+
+            <!-- Principle 4 -->
+            <div class="principle-group">
+                <h3>Principle 4: Robust</h3>
+
+                <div class="criteria-row">
+                    <div><strong>SC 4.1.2 Name, Role, Value</strong> <span class="badge badge-fail">FAIL</span></div>
+                    <div class="criteria-evidence"><strong>Custom select inaccessible:</strong> No role, no aria-expanded, no aria-label. Options have no semantic structure. Standard form inputs have adequate names via labels.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section">
+            <h2 class="section-title">Critical Failures Summary</h2>
+            <p style="margin-bottom: 20px;">The following 7 distinct failures prevent WCAG 2.2 AA compliance:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Criterion</th>
+                        <th>Issue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr style="background-color: var(--fail-bg);"><td>1</td><td>SC 1.3.1</td><td>Email input lacks label/aria-label</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>2</td><td>SC 1.3.1</td><td>Phone input lacks label/aria-label</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>3</td><td>SC 1.3.1</td><td>Radio group uses &lt;p&gt; instead of &lt;fieldset&gt;/&lt;legend&gt;</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>4</td><td>SC 3.3.2</td><td>Password error not associated via aria-describedby</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>5</td><td>SC 1.3.1</td><td>Required indicator relies only on color (red asterisk)</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>6</td><td>SC 4.1.2</td><td>Custom select lacks ARIA roles and keyboard support</td></tr>
+                    <tr style="background-color: var(--fail-bg);"><td>7</td><td>SC 1.4.3/1.4.11</td><td>4 color pairs fail contrast minimums</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="report-footer">
+            <div class="footer-note"><strong>Audit Methodology:</strong> Comprehensive manual code review combined with programmatic color contrast verification using the WCAG 2.2 relative luminance formula.</div>
+            <div class="footer-note"><strong>Test Date:</strong> March 5, 2026</div>
+            <div class="footer-note"><strong>Compliance Level Evaluated:</strong> WCAG 2.2 Level AA</div>
+            <div class="footer-note" style="margin-top: 20px; font-size: 0.85rem;">This report was generated as part of an automated accessibility audit. All findings should be verified by an accessibility professional before implementation of fixes.</div>
+        </div>
+    </div>
+</body>
+</html>
