@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <title>WCAG 2.2 AA Audit Report — 07-fully-compliant.html</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1a2e;
+                color: #e0e0e0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: #ffffff;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .header {
+                background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+        .header .audit-date {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .verdict-banner {
+            padding: 24px;
+            border-radius: 8px;
+            margin-bottom: 32px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .verdict-pass {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .verdict-fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .verdict-pass {
+                background: #1e5631;
+                color: #7cfc00;
+                border-color: #2d8659;
+            }
+            .verdict-fail {
+                background: #5f2120;
+                color: #ff6b6b;
+                border-color: #8b3a3a;
+            }
+        }
+
+        .kpi-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: #f5f7fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .kpi-card {
+                background: #16213e;
+                border-color: #2a2a4a;
+            }
+        }
+
+        .kpi-card .value {
+            font-size: 2.4rem;
+            font-weight: bold;
+            color: #0f3460;
+            margin: 8px 0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .kpi-card .value {
+                color: #64b5f6;
+            }
+        }
+
+        .kpi-card .label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .kpi-card .label {
+                color: #aaa;
+            }
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin: 40px 0 20px;
+            color: #0f3460;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 8px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            h2 {
+                color: #64b5f6;
+                border-color: #64b5f6;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #f5f7fa;
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            th {
+                background: #0f3460;
+                color: #e0e0e0;
+                border-color: #2a2a4a;
+            }
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            td {
+                border-color: #2a2a4a;
+            }
+        }
+
+        tr:hover td {
+            background: #f9f9f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            tr:hover td {
+                background: #1a1a2e;
+            }
+        }
+
+        .color-swatch {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .color-swatch {
+                border-color: #444;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge-pass {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-na {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .badge-pass {
+                background: #1e5631;
+                color: #7cfc00;
+            }
+            .badge-fail {
+                background: #5f2120;
+                color: #ff6b6b;
+            }
+            .badge-warning {
+                background: #5f4a1a;
+                color: #ffc107;
+            }
+            .badge-na {
+                background: #333;
+                color: #aaa;
+            }
+        }
+
+        .criteria-code {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.9rem;
+            color: #d63384;
+            font-weight: 500;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .criteria-code {
+                color: #ff90e8;
+            }
+        }
+
+        .evidence-text {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin-top: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .evidence-text {
+                color: #aaa;
+            }
+        }
+
+        .footer {
+            background: #f5f7fa;
+            border-top: 1px solid #e0e0e0;
+            padding: 24px;
+            margin-top: 48px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .footer {
+                background: #16213e;
+                border-color: #2a2a4a;
+                color: #aaa;
+            }
+        }
+
+        .contrast-fail-section {
+            background: #fef5e7;
+            border-left: 4px solid #f39c12;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 4px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .contrast-fail-section {
+                background: #5f4a1a;
+                border-color: #f39c12;
+            }
+        }
+
+        .contrast-fail-section strong {
+            color: #d68910;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .contrast-fail-section strong {
+                color: #ffc107;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>WCAG 2.2 Level AA Audit Report</h1>
+    <div class="subtitle">07-fully-compliant.html</div>
+    <div class="audit-date">Audit Date: March 5, 2026</div>
+</div>
+
+<div class="container">
+    <div class="verdict-banner verdict-fail">
+        ❌ <strong>FAILS WCAG 2.2 AA</strong> — 4 criteria with issues found
+    </div>
+
+    <div class="kpi-cards">
+        <div class="kpi-card">
+            <div class="label">Criteria Evaluated</div>
+            <div class="value">28</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Passing</div>
+            <div class="value" style="color: #27ae60;">24</div>
+        </div>
+        <div class="kpi-card">
+            <div class="label">Failing</div>
+            <div class="value" style="color: #e74c3c;">4</div>
+        </div>
+    </div>
+
+    <h2>Color Contrast Verification (Programmatic)</h2>
+    <p>All color pairs extracted from CSS and verified using the WCAG 2.2 relative luminance formula. Dark theme page with custom focus styles.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Color Pair</th>
+                <th>Foreground / Background</th>
+                <th>Ratio</th>
+                <th>Required</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Body text</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>12.92:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Link (default)</td>
+                <td><span class="color-swatch" style="background: #64b5f6;"></span> #64b5f6 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>7.70:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Link (hover)</td>
+                <td><span class="color-swatch" style="background: #90caf9;"></span> #90caf9 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>9.75:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Skip link text</td>
+                <td><span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e / <span class="color-swatch" style="background: #ffffff;"></span> #ffffff</td>
+                <td>17.06:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Navigation link</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>12.04:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Navigation link (hover)</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>15.89:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>H1 Heading</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>17.06:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>H2 Heading</td>
+                <td><span class="color-swatch" style="background: #f0f0f0;"></span> #f0f0f0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>14.97:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>H3 Heading</td>
+                <td><span class="color-swatch" style="background: #e8e8e8;"></span> #e8e8e8 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>13.92:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Button text</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #0f3460;"></span> #0f3460</td>
+                <td>12.50:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td><strong>Button border</strong></td>
+                <td><span class="color-swatch" style="background: #1a5276;"></span> #1a5276 / <span class="color-swatch" style="background: #0f3460;"></span> #0f3460</td>
+                <td>1.50:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-fail">❌ FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Button text (hover)</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #1a5276;"></span> #1a5276</td>
+                <td>8.36:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Icon button text</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #0f3460;"></span> #0f3460</td>
+                <td>12.50:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Focus outline</td>
+                <td><span class="color-swatch" style="background: #ffd700;"></span> #ffd700 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>12.16:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Focus outline (on button)</td>
+                <td><span class="color-swatch" style="background: #ffd700;"></span> #ffd700 / <span class="color-swatch" style="background: #0f3460;"></span> #0f3460</td>
+                <td>8.91:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Form label</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>12.92:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Form input text</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>12.04:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td><strong>Form input border</strong></td>
+                <td><span class="color-swatch" style="background: #4a4a6a;"></span> #4a4a6a / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>1.88:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-fail">❌ FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Form placeholder text</td>
+                <td><span class="color-swatch" style="background: #8888aa;"></span> #8888aa / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>4.65:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Card text</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>12.04:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td><strong>Card border</strong></td>
+                <td><span class="color-swatch" style="background: #2a2a4a;"></span> #2a2a4a / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>1.16:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-fail">❌ FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Table header text</td>
+                <td><span class="color-swatch" style="background: #ffffff;"></span> #ffffff / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>15.89:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Table body text</td>
+                <td><span class="color-swatch" style="background: #e0e0e0;"></span> #e0e0e0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>12.92:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td><strong>Table border</strong></td>
+                <td><span class="color-swatch" style="background: #2a2a4a;"></span> #2a2a4a / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>1.24:1</td>
+                <td>3.0:1</td>
+                <td><span class="badge badge-fail">❌ FAIL</span></td>
+            </tr>
+            <tr>
+                <td>Table caption</td>
+                <td><span class="color-swatch" style="background: #f0f0f0;"></span> #f0f0f0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>14.97:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Footer text</td>
+                <td><span class="color-swatch" style="background: #aaaacc;"></span> #aaaacc / <span class="color-swatch" style="background: #16213e;"></span> #16213e</td>
+                <td>7.06:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Required text</td>
+                <td><span class="color-swatch" style="background: #cccccc;"></span> #cccccc / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>10.62:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+            <tr>
+                <td>Legend text</td>
+                <td><span class="color-swatch" style="background: #f0f0f0;"></span> #f0f0f0 / <span class="color-swatch" style="background: #1a1a2e;"></span> #1a1a2e</td>
+                <td>14.97:1</td>
+                <td>4.5:1</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="contrast-fail-section">
+        <strong>⚠️ Non-text Contrast Failures (SC 1.4.11)</strong>
+        <p>Four UI component borders fail to meet the required 3.0:1 contrast ratio for non-text elements. These are subtle, low-contrast borders:</p>
+        <ul style="margin-left: 24px; margin-top: 12px;">
+            <li>Button border: 1.50:1 (need 3.0:1)</li>
+            <li>Form input border: 1.88:1 (need 3.0:1)</li>
+            <li>Card border: 1.16:1 (need 3.0:1)</li>
+            <li>Table border: 1.24:1 (need 3.0:1)</li>
+        </ul>
+        <p style="margin-top: 12px;">These subtle divider lines should be brightened to meet accessibility requirements, or the borders should be replaced with alternative visual indicators (shadows, spacing) that don't rely on color contrast alone.</p>
+    </div>
+
+    <h2>WCAG 2.2 AA Criteria Review (28 Total)</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Criterion</th>
+                <th>Status</th>
+                <th>Evidence / Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Perceivable -->
+            <tr>
+                <td><span class="criteria-code">SC 1.1.1</span> Non-text Content</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All images have alt text or are marked decorative with alt="" and role="presentation". Icon buttons use aria-label.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.2.1</span> Audio-only and Video-only</td>
+                <td><span class="badge badge-na">N/A</span></td>
+                <td><span class="evidence-text">No audio or video content on page.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.2.2</span> Captions (Prerecorded)</td>
+                <td><span class="badge badge-na">N/A</span></td>
+                <td><span class="evidence-text">No video content on page.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.2.3</span> Audio Description or Media Alternative</td>
+                <td><span class="badge badge-na">N/A</span></td>
+                <td><span class="evidence-text">No media content on page.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.2.5</span> Audio Description (Prerecorded)</td>
+                <td><span class="badge badge-na">N/A</span></td>
+                <td><span class="evidence-text">No video content on page.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.3.1</span> Info and Relationships</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Proper semantic HTML: headings use h1-h3, navigation has proper landmark with aria-label, form inputs have associated labels via for/id, fieldset/legend present, table has caption and scope attributes.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.3.2</span> Meaningful Sequence</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">DOM order matches visual order. No CSS order property or absolute positioning that disrupts reading sequence.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.3.3</span> Sensory Characteristics</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Instructions reference explicit text (e.g., "Click Submit button", "Fields marked with (required)") rather than shape or color alone.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.1</span> Use of Color</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Links are underlined, not color-alone. Form labels are text-based. No information conveyed by color alone.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.2</span> Audio Control</td>
+                <td><span class="badge badge-na">N/A</span></td>
+                <td><span class="evidence-text">No auto-playing audio on page.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.3</span> Contrast (Minimum)</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All text and interactive content meets 4.5:1 (normal text) or 3:1 (large text) contrast. Dark theme with high-contrast text colors.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.4</span> Resize Text</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No fixed heights or overflow:hidden on text containers. Text can scale to 200% without content loss or functionality impairment.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.5</span> Images of Text</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No images used to render text. All headings, labels, and content use semantic HTML text elements.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.10</span> Reflow</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Responsive design with max-width container. No fixed-width elements forcing horizontal scroll at 320px or 400% zoom. Layout adapts gracefully.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.11</span> Non-text Contrast</td>
+                <td><span class="badge badge-fail">❌ FAIL</span></td>
+                <td><span class="evidence-text">Four UI component borders fail 3:1 requirement: button borders (1.5:1), form input borders (1.88:1), card borders (1.16:1), and table borders (1.24:1). These should be darkened or replaced with alternative visual indicators.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.12</span> Text Spacing</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No restrictive overflow rules. Supports line-height 1.5x, paragraph spacing 2x, letter-spacing 0.12x, and word-spacing 0.16x without content clipping.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 1.4.13</span> Content on Hover or Focus</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No hover/focus-triggered tooltips or content overlays on this page. Links and buttons display static content.</span></td>
+            </tr>
+            <!-- Operable -->
+            <tr>
+                <td><span class="criteria-code">SC 2.1.1</span> Keyboard</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All interactive elements (buttons, links, form inputs) are keyboard accessible. Can Tab through all controls and activate with Enter/Space.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.1.2</span> No Keyboard Trap</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No keyboard traps. All elements can be navigated out of using Tab/Shift+Tab. No focus locks or modal implementations.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.4.3</span> Focus Order</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No explicit tabindex values. Natural focus order follows DOM sequence. Tab navigation is logical and predictable.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.4.5</span> Multiple Ways</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Navigation menu provides multiple ways to locate content. Primary nav with Home, About, Services, Contact links.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.4.6</span> Headings and Labels</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All headings are descriptive ("Our Services", "Quick Actions", "Pricing Overview", "Contact Us"). Form labels are clear and explicit.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.4.7</span> Focus Visible</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Custom :focus-visible with 3px solid #ffd700 outline and 2px offset. Clearly visible on all interactive elements (buttons, links, form inputs).</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.4.11</span> Focus Not Obscured (Minimum) — New WCAG 2.2</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">No sticky headers, footers, or modals that would obscure focused elements. Focus indicators appear on top of all content (not hidden). Z-index layering is correct.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.5.3</span> Label in Name</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">Visible text labels match accessible names. Button text ("Learn More About Consulting", "Send Message") matches aria-label for icon buttons.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 2.5.8</span> Target Size (Minimum) — New WCAG 2.2</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All buttons meet 44x44px minimum (exceeds 24px requirement). Icon buttons are 44x44px. Inline links within body text are exempt due to being inline with text flow.</span></td>
+            </tr>
+            <!-- Understandable -->
+            <tr>
+                <td><span class="criteria-code">SC 3.1.1</span> Language of Page</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">HTML element has lang="en" attribute.</span></td>
+            </tr>
+            <tr>
+                <td><span class="criteria-code">SC 3.1.2</span> Language of Parts</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All content is in English. No multi-language sections requiring individual lang attributes.</span></td>
+            </tr>
+            <!-- Robust -->
+            <tr>
+                <td><span class="criteria-code">SC 4.1.2</span> Name, Role, Value</td>
+                <td><span class="badge badge-pass">✅ PASS</span></td>
+                <td><span class="evidence-text">All form inputs have proper labels and required attributes. Icon buttons have aria-label. Skip link, navigation, and main landmark are properly labeled. Custom controls expose role via semantic elements.</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Summary of Issues</h2>
+
+    <h3 style="margin-top: 20px; margin-bottom: 12px; font-size: 1.2rem; color: #e74c3c;">Critical Issues (4)</h3>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Issue</th>
+                <th>Criterion</th>
+                <th>Severity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Button border contrast</strong><br><span class="evidence-text">#1a5276 on #0f3460 → 1.50:1</span></td>
+                <td>SC 1.4.11</td>
+                <td><span class="badge badge-fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td><strong>Form input border contrast</strong><br><span class="evidence-text">#4a4a6a on #16213e → 1.88:1</span></td>
+                <td>SC 1.4.11</td>
+                <td><span class="badge badge-fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td><strong>Card border contrast</strong><br><span class="evidence-text">#2a2a4a on #16213e → 1.16:1</span></td>
+                <td>SC 1.4.11</td>
+                <td><span class="badge badge-fail">FAIL</span></td>
+            </tr>
+            <tr>
+                <td><strong>Table border contrast</strong><br><span class="evidence-text">#2a2a4a on #1a1a2e → 1.24:1</span></td>
+                <td>SC 1.4.11</td>
+                <td><span class="badge badge-fail">FAIL</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Recommendations</h2>
+
+    <p>To achieve WCAG 2.2 AA compliance, address the four non-text contrast failures:</p>
+
+    <ol style="margin-left: 24px; margin-top: 12px;">
+        <li><strong>Button borders:</strong> Increase #1a5276 to approximately #3b7aad or use a shadow effect instead of a thin border.</li>
+        <li><strong>Form input borders:</strong> Increase #4a4a6a to approximately #7a7a9a to reach 3:1 on #16213e background.</li>
+        <li><strong>Card borders:</strong> Increase #2a2a4a to approximately #5a5a7a or use box-shadow for visual separation.</li>
+        <li><strong>Table borders:</strong> Increase #2a2a4a to approximately #5a5a7a or use background color alternation instead of borders.</li>
+    </ol>
+
+    <p style="margin-top: 16px;">All other 24 criteria pass. The page demonstrates strong accessibility practices: semantic HTML, proper ARIA usage, keyboard navigation, high text contrast, appropriately-sized touch targets, visible focus indicators, and responsive design.</p>
+
+    <h2>Methodology</h2>
+
+    <p>This audit followed WCAG 2.2 Level AA conformance requirements with programmatic color contrast verification. All color pairs were extracted from CSS (including custom properties, interactive states, and contextual backgrounds) and tested using the W3C relative luminance formula. Manual review covered all 28 applicable success criteria with special attention to:</p>
+
+    <ul style="margin-left: 24px; margin-top: 12px;">
+        <li>Semantic HTML structure and relationships (SC 1.3.1)</li>
+        <li>Color contrast for text and non-text elements (SC 1.4.3, SC 1.4.11)</li>
+        <li>Focus visibility and keyboard navigation (SC 2.4.7, SC 2.1.1)</li>
+        <li>Target size and focus obscuring (SC 2.5.8, SC 2.4.11 — new in WCAG 2.2)</li>
+        <li>Alternative text and accessible names (SC 1.1.1, SC 2.5.3)</li>
+    </ul>
+
+    <div class="footer">
+        <p><strong>Audit Tool:</strong> WCAG 2.2 AA Accessibility Audit Skill | Programmatic verification using W3C relative luminance algorithm</p>
+        <p><strong>Audit Date:</strong> March 5, 2026</p>
+        <p><strong>Page File:</strong> /sessions/optimistic-busy-davinci/wcag-audit/evals/test-pages/07-fully-compliant.html</p>
+    </div>
+</div>
+
+</body>
+</html>

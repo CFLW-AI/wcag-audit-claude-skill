@@ -1,0 +1,1874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beyond AI-Proofing: Pedagogy and Design in the Age of Intelligence</title>
+    <meta name="color-scheme" content="dark light">
+
+    <!-- Fonts: Clash Display for headlines, DM Sans for body -->
+    <link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===========================================
+           CSS CUSTOM PROPERTIES (THEME)
+           Change these to restyle the entire deck
+           =========================================== */
+        :root {
+            /* Colors */
+            --bg-primary: #0f1419;
+            --bg-secondary: #1a2332;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --text-primary: #f0f4f8;
+            --text-secondary: #8899aa;
+            --text-muted: #7b8fa3; /* WCAG 2.2 AA: 4.6:1 on #0f1419 */
+            --accent: #00d4aa;
+            --accent-secondary: #667eea;
+            --accent-warm: #f093fb;
+            --accent-glow: rgba(0, 212, 170, 0.15);
+            --danger: #ff6b6b;
+            --warning: #ffd93d;
+
+            /* Typography — all clamp() for responsive scaling */
+            --font-display: 'Clash Display', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --title-size: clamp(2rem, 5.5vw, 4.5rem);
+            --h2-size: clamp(1.5rem, 4vw, 3rem);
+            --h3-size: clamp(1.1rem, 2.5vw, 1.75rem);
+            --body-size: clamp(0.85rem, 1.5vw, 1.2rem);
+            --small-size: clamp(0.7rem, 1vw, 0.9rem);
+            --label-size: clamp(0.65rem, 0.9vw, 0.8rem);
+
+            /* Spacing */
+            --slide-padding: clamp(1.5rem, 5vw, 5rem);
+            --content-gap: clamp(0.75rem, 2vw, 2rem);
+            --element-gap: clamp(0.4rem, 1vw, 1rem);
+
+            /* Animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --duration-normal: 0.7s;
+        }
+
+        /* ===========================================
+           BASE RESET & SCROLL SNAP
+           =========================================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            height: 100%;
+            overflow-x: hidden;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            height: 100%;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ===========================================
+           SKIP LINK (WCAG 2.2 — keyboard access)
+           =========================================== */
+        .skip-link {
+            position: fixed;
+            top: -100%;
+            left: 1rem;
+            z-index: 10000;
+            background: var(--accent);
+            color: var(--bg-primary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0 0 8px 8px;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: var(--body-size);
+            transition: top 0.2s;
+        }
+        .skip-link:focus {
+            top: 0;
+            outline: 3px solid var(--warning);
+            outline-offset: 2px;
+        }
+
+        /* ===========================================
+           SLIDE CONTAINER
+           Each slide = exact viewport height
+           =========================================== */
+        .slide {
+            width: 100vw;
+            min-height: 100vh;
+            min-height: 100dvh;
+            overflow: visible;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: var(--slide-padding);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ===========================================
+           TYPOGRAPHY
+           =========================================== */
+        h1 {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        h2 {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 600;
+            line-height: 1.15;
+            letter-spacing: -0.01em;
+        }
+
+        h3 {
+            font-family: var(--font-display);
+            font-size: var(--h3-size);
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        p, li {
+            font-size: var(--body-size);
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .label {
+            font-size: var(--label-size);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .accent { color: var(--accent); }
+        .accent-secondary { color: var(--accent-secondary); }
+        .accent-warm { color: var(--accent-warm); }
+        .danger { color: var(--danger); }
+        .warning { color: var(--warning); }
+        .muted { color: var(--text-muted); }
+
+        /* ===========================================
+           DECORATIVE BACKGROUNDS
+           =========================================== */
+        .gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ===========================================
+           REVEAL ANIMATIONS
+           Elements animate in when slide becomes visible
+           =========================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.visible .reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal:nth-child(2) { transition-delay: 0.1s; }
+        .reveal:nth-child(3) { transition-delay: 0.2s; }
+        .reveal:nth-child(4) { transition-delay: 0.3s; }
+        .reveal:nth-child(5) { transition-delay: 0.4s; }
+        .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity var(--duration-normal) var(--ease-out-expo),
+                        transform var(--duration-normal) var(--ease-out-expo);
+        }
+        .slide.visible .reveal-scale {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* ===========================================
+           BULLET LIST STYLING
+           =========================================== */
+        .bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--element-gap);
+            margin-top: var(--content-gap);
+        }
+
+        .bullet-list li {
+            padding-left: 1.5em;
+            position: relative;
+            font-size: var(--body-size);
+        }
+
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.65em;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .bullet-list.warm li::before { background: var(--accent-warm); }
+        .bullet-list.blue li::before { background: var(--accent-secondary); }
+        .bullet-list.red li::before { background: var(--danger); }
+
+        /* ===========================================
+           CARD COMPONENTS
+           =========================================== */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: clamp(1rem, 2vw, 1.75rem);
+            backdrop-filter: blur(8px);
+        }
+
+        .experiment-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: clamp(2rem, 3vw, 2.75rem);
+            height: clamp(2rem, 3vw, 2.75rem);
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--bg-primary);
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: clamp(0.9rem, 1.5vw, 1.25rem);
+            flex-shrink: 0;
+        }
+
+        .experiment-header {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+            margin-bottom: var(--content-gap);
+        }
+
+        /* ===========================================
+           DIVIDER
+           =========================================== */
+        .divider {
+            width: clamp(40px, 8vw, 80px);
+            height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin: var(--element-gap) 0;
+        }
+
+        /* ===========================================
+           SECTION SLIDE (big centered statement)
+           =========================================== */
+        .section-slide .slide-content {
+            align-items: center;
+            text-align: center;
+            max-width: min(90vw, 900px);
+            margin: 0 auto;
+        }
+
+        /* ===========================================
+           PROGRESS BAR
+           =========================================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+            z-index: 1000;
+            transition: width 0.3s var(--ease-out-expo);
+            width: 0%;
+        }
+
+        /* ===========================================
+           NAVIGATION HINT (bottom of screen)
+           =========================================== */
+        .nav-hint {
+            position: fixed;
+            bottom: clamp(1rem, 2vh, 2rem);
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            opacity: 0.5;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .nav-hint.hidden { opacity: 0; }
+
+        .nav-hint span {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        .nav-hint .arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            transform: rotate(45deg);
+            animation: bounceDown 1.5s infinite;
+        }
+
+        @keyframes bounceDown {
+            0%, 100% { transform: rotate(45deg) translateY(0); }
+            50% { transform: rotate(45deg) translateY(4px); }
+        }
+
+        /* ===========================================
+           SLIDE COUNTER
+           =========================================== */
+        .slide-counter {
+            position: fixed;
+            bottom: clamp(1rem, 2vh, 2rem);
+            right: clamp(1rem, 2vw, 2rem);
+            z-index: 100;
+            font-family: var(--font-display);
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* ===========================================
+           FOCUS STYLES (WCAG 2.2)
+           SC 2.4.7 Focus Visible — always show focus
+           SC 2.4.11 Focus Not Obscured (Minimum)
+           SC 1.4.11 Non-text Contrast (3:1 min)
+           =========================================== */
+        :focus-visible {
+            outline: 3px solid var(--accent); /* dark: #00d4aa (14.1:1), light: #007a5c (5.06:1) — both pass 3:1 */
+            outline-offset: 3px;
+            border-radius: 4px;
+            z-index: 10; /* SC 2.4.11: ensure focus indicator is not obscured by overlapping content */
+        }
+
+        /* ===========================================
+           RESPONSIVE BREAKPOINTS
+           =========================================== */
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(1rem, 3vw, 2.5rem);
+                --content-gap: clamp(0.5rem, 1.5vw, 1.25rem);
+                --title-size: clamp(1.5rem, 5vw, 3rem);
+                --h2-size: clamp(1.25rem, 3.5vw, 2.25rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 2.5vw, 1.75rem);
+                --content-gap: clamp(0.4rem, 1vw, 0.85rem);
+                --title-size: clamp(1.25rem, 4.5vw, 2.25rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+            .nav-hint, .decorative { display: none; }
+        }
+
+        @media (max-height: 500px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2vw, 1.25rem);
+                --title-size: clamp(1rem, 3.5vw, 1.75rem);
+                --h2-size: clamp(0.9rem, 2.5vw, 1.5rem);
+                --body-size: clamp(0.65rem, 1vw, 0.85rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.5rem, 8vw, 3rem);
+            }
+        }
+
+        /* ===========================================
+           REDUCED MOTION
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+            .reveal, .reveal-scale {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ===========================================
+           RESOURCES SECTION (post-presentation reference)
+           Two-column listing layout.
+           =========================================== */
+        .resources-section {
+            scroll-snap-align: start;
+        }
+
+        .resources-wrapper {
+            background: var(--bg-primary);
+            padding: clamp(2rem, 4vw, 4rem);
+            position: relative;
+        }
+
+        .resources-wrapper .grid-overlay {
+            opacity: 0.5;
+        }
+
+        .resources-header {
+            text-align: center;
+            padding: clamp(3rem, 6vh, 6rem) 0 clamp(2rem, 4vh, 4rem);
+            position: relative;
+            z-index: 2;
+        }
+
+        .resources-header h2 {
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+        }
+
+        .resources-header .subtitle {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            font-style: italic;
+            margin-top: 0.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .resource-category {
+            max-width: 1100px;
+            margin: 0 auto clamp(2.5rem, 5vh, 4rem);
+            position: relative;
+            z-index: 2;
+        }
+
+        .category-header {
+            font-family: var(--font-display);
+            font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+        }
+
+        .category-number {
+            color: var(--accent);
+            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+        }
+
+        .category-description {
+            font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        /* --- Two-column resource listing --- */
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(0.75rem, 1.5vw, 1.25rem);
+        }
+
+        .resource-entry {
+            padding: clamp(0.6rem, 1.2vw, 1rem);
+            border-left: 2px solid var(--accent);
+            transition: border-color 0.2s ease;
+        }
+
+        .resource-entry:hover {
+            border-color: var(--accent-secondary);
+        }
+
+        .resource-title {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-style: italic;
+            color: var(--accent);
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+            line-height: 1.35;
+            margin-bottom: 0.3rem;
+        }
+
+        .resource-citation {
+            font-size: clamp(0.6rem, 0.85vw, 0.75rem);
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .resource-citation a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+        }
+
+        .resource-citation a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 700px) {
+            .resource-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Light mode overrides for resources --- */
+        [data-theme="light"] .category-header {
+            border-bottom-color: rgba(0,0,0,0.1);
+        }
+
+        .resources-footer {
+            text-align: center;
+            padding: clamp(2rem, 4vh, 4rem) 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .resources-footer p {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        /* ===========================================
+           LIGHT MODE THEME
+           =========================================== */
+        [data-theme="light"] {
+            --bg-primary: #f8f9fc;
+            --bg-secondary: #edf0f7;
+            --bg-card: rgba(0, 0, 0, 0.03);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --text-muted: #6d6d8a; /* WCAG 2.2 AA: 4.74:1 on #f8f9fc */
+            --accent: #007a5c; /* WCAG 2.2 AA: 5.06:1 on #f8f9fc (was #00b894 @ 2.41:1) */
+            --accent-secondary: #4a58a0; /* WCAG 2.2 AA: 6.24:1 on #f8f9fc (was #5c6bc0 @ 3.38:1) */
+            --accent-warm: #b0286e; /* WCAG 2.2 AA: 5.91:1 on #f8f9fc (was #e040a0 @ 3.69:1) */
+            --accent-glow: rgba(0, 122, 92, 0.12);
+            --warning: #8b6508; /* WCAG 2.2 AA: 5.30:1 on #f8f9fc */
+        }
+
+        [data-theme="light"] .grid-overlay {
+            background-image:
+                linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+        }
+
+        [data-theme="light"] .card {
+            border-color: rgba(0,0,0,0.08);
+            backdrop-filter: none;
+            background: rgba(255,255,255,0.6);
+        }
+
+        [data-theme="light"] .gradient-orb {
+            opacity: 0.15;
+        }
+
+        [data-theme="light"] .bullet-list li::before {
+            background: var(--accent);
+        }
+
+        [data-theme="light"] .resource-entry {
+            border-left-color: rgba(0,0,0,0.06);
+        }
+
+        [data-theme="light"] .category-header {
+            border-bottom-color: rgba(0,0,0,0.1);
+        }
+
+        /* ===========================================
+           LIGHT MODE — RESOURCES OVERRIDES
+           purple titles, black text, accessible blue links
+           =========================================== */
+        [data-theme="light"] .resource-title {
+            color: var(--accent-secondary);
+        }
+
+        [data-theme="light"] .resource-citation {
+            color: #1a1a2e;
+        }
+
+        [data-theme="light"] .resource-citation a {
+            color: #155ba8; /* WCAG 2.2 AA: 6.45:1 on #f8f9fc (was #2979d6 @ 4.16:1) */
+            opacity: 1;
+        }
+
+        [data-theme="light"] .resource-citation a:hover {
+            color: #0e4280; /* WCAG 2.2 AA: 9.46:1 on #f8f9fc */
+        }
+
+        [data-theme="light"] .resource-entry {
+            border-color: var(--accent-secondary);
+        }
+
+        [data-theme="light"] .category-description {
+            color: #5a5a7a; /* WCAG 2.2 AA: 6.28:1 on #f8f9fc */
+        }
+
+        /* WCAG 2.2 AA fix: ensure experiment numbers use white on new darker accents (all pass 4.5:1+) */
+        [data-theme="light"] .experiment-number {
+            color: #fff; /* 5.06:1 on #007a5c, 6.57:1 on #4a58a0, 6.22:1 on #b0286e, 5.30:1 on #8b6508 */
+        }
+
+        /* ===========================================
+           THEME TOGGLE BUTTON
+           =========================================== */
+        .theme-toggle {
+            position: fixed;
+            top: clamp(0.75rem, 2vh, 1.5rem);
+            right: clamp(0.75rem, 2vw, 1.5rem);
+            z-index: 1001;
+            background: var(--bg-card);
+            border: 1px solid rgba(128,128,128,0.15);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.3s, border-color 0.3s;
+            font-size: 1.1rem;
+            line-height: 1;
+            padding: 0;
+            color: var(--text-secondary);
+        }
+
+        .theme-toggle:hover {
+            background: rgba(128,128,128,0.12);
+            border-color: var(--accent);
+        }
+
+        .theme-toggle .icon-sun,
+        .theme-toggle .icon-moon {
+            position: absolute;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        /* Dark mode (default): show sun icon to switch to light */
+        .theme-toggle .icon-sun {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+        .theme-toggle .icon-moon {
+            opacity: 0;
+            transform: rotate(-90deg);
+        }
+
+        /* Light mode: show moon icon to switch to dark */
+        [data-theme="light"] .theme-toggle .icon-sun {
+            opacity: 0;
+            transform: rotate(90deg);
+        }
+        [data-theme="light"] .theme-toggle .icon-moon {
+            opacity: 1;
+            transform: rotate(0deg);
+        }
+
+        [data-theme="light"] .theme-toggle {
+            background: rgba(255,255,255,0.7);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        /* ===========================================
+           HIGH CONTRAST MODE (WCAG 2.2)
+           =========================================== */
+        @media (forced-colors: active) {
+            .card { border: 2px solid CanvasText; }
+            .divider { background: CanvasText; }
+            .experiment-number { border: 2px solid CanvasText; }
+            .progress-bar { background: Highlight; }
+            .theme-toggle { border: 2px solid CanvasText; }
+        }
+
+        /* ===========================================
+           SLIDE-SPECIFIC STYLES
+           =========================================== */
+
+        /* Title slide special treatment */
+        .title-slide {
+            text-align: center;
+            align-items: center;
+        }
+        .title-slide .slide-content {
+            align-items: center;
+            text-align: center;
+        }
+        .title-slide h1 {
+            max-width: min(90vw, 800px);
+        }
+        .title-meta {
+            display: flex;
+            gap: clamp(1rem, 3vw, 2rem);
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: var(--content-gap);
+        }
+        .title-meta span {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        /* Big quote / statement slides */
+        .big-statement h2 {
+            font-size: clamp(1.75rem, 4.5vw, 3.5rem);
+            max-width: min(90vw, 850px);
+            line-height: 1.15;
+        }
+        .big-statement .slide-content {
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Two-tone accent split */
+        .split-accent {
+            background: linear-gradient(135deg,
+                rgba(0, 212, 170, 0.03) 0%,
+                transparent 50%,
+                rgba(102, 126, 234, 0.03) 100%);
+        }
+
+
+        /* ===========================================
+           ✦ ENHANCEMENT: PARTICLE CANVAS
+           Fixed: z-index, rgba colors, higher opacity
+           =========================================== */
+        #particle-canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            z-index: 1;
+            pointer-events: none;
+        }
+        [data-theme="light"] #particle-canvas { opacity: 0.45; }
+
+        /* ===========================================
+           ✦ ENHANCEMENT: PROGRESS SPINE
+           Fixed: absolute positioning, proper sizing
+           =========================================== */
+        .progress-spine {
+            position: fixed;
+            left: clamp(0.6rem, 1.2vw, 1.2rem);
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .spine-track {
+            position: absolute;
+            width: 2px;
+            top: 0; bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.06);
+            border-radius: 1px;
+        }
+        [data-theme="light"] .spine-track { background: rgba(0,0,0,0.06); }
+        .spine-fill {
+            position: absolute;
+            width: 2px;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 0%;
+            background: linear-gradient(180deg, var(--accent), var(--accent-secondary));
+            transition: height 0.4s var(--ease-out-expo);
+            border-radius: 1px;
+        }
+        .spine-dot {
+            /* Visual dot is 8px but touch/click target is 24px min (WCAG 2.2 SC 2.5.8) */
+            width: 8px; height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-out-expo);
+            flex-shrink: 0;
+        }
+        /* Invisible touch target expansion to 24×24px minimum (SC 2.5.8 Target Size) */
+        .spine-dot::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+        [data-theme="light"] .spine-dot {
+            background: rgba(0,0,0,0.05);
+            border-color: rgba(0,0,0,0.15);
+        }
+        .spine-dot.active {
+            width: 12px; height: 12px;
+            background: var(--accent);
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(0,212,170,0.5);
+        }
+        .spine-dot.active::before {
+            width: 24px;
+            height: 24px;
+        }
+        .spine-dot.visited {
+            background: var(--accent-secondary);
+            border-color: var(--accent-secondary);
+            opacity: 0.6;
+        }
+        .spine-dot .spine-tip {
+            display: none;
+        }
+        @media (max-width: 900px) {
+            .progress-spine { display: none; }
+        }
+
+        /* ===========================================
+           ✦ ENHANCEMENT: DRAMATIC TEXT REVEALS
+           Fixed: much more visible transforms, delays
+           =========================================== */
+        .scale-bounce {
+            opacity: 0;
+            transform: scale(0.5) translateY(30px);
+            transition: all 1s var(--ease-out-back) !important;
+        }
+        .slide.visible .scale-bounce {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        .blur-reveal {
+            opacity: 0;
+            filter: blur(20px);
+            transform: translateY(20px);
+            transition: all 1.2s var(--ease-out-expo) !important;
+        }
+        .slide.visible .blur-reveal {
+            opacity: 1;
+            filter: blur(0);
+            transform: translateY(0);
+        }
+
+        .split-left, .split-right {
+            display: inline-block;
+            opacity: 0;
+            transition: all 1s var(--ease-out-expo) !important;
+        }
+        .split-left { transform: translateX(-60px) rotate(-3deg); }
+        .split-right { transform: translateX(60px) rotate(3deg); }
+        .slide.visible .split-left {
+            opacity: 1;
+            transform: translateX(0) rotate(0);
+        }
+        .slide.visible .split-right {
+            opacity: 1;
+            transform: translateX(0) rotate(0);
+            transition-delay: 0.4s !important;
+        }
+
+        .cascade-reveal > * {
+            opacity: 0 !important;
+            transform: translateX(-20px) translateY(15px) !important;
+            transition: opacity 0.7s var(--ease-out-expo),
+                        transform 0.7s var(--ease-out-expo) !important;
+        }
+        .slide.visible .cascade-reveal > *:nth-child(1) { transition-delay: 0.2s !important; opacity: 1 !important; transform: translate(0) !important; }
+        .slide.visible .cascade-reveal > *:nth-child(2) { transition-delay: 0.45s !important; opacity: 1 !important; transform: translate(0) !important; }
+        .slide.visible .cascade-reveal > *:nth-child(3) { transition-delay: 0.7s !important; opacity: 1 !important; transform: translate(0) !important; }
+        .slide.visible .cascade-reveal > *:nth-child(4) { transition-delay: 0.95s !important; opacity: 1 !important; transform: translate(0) !important; }
+        .slide.visible .cascade-reveal > *:nth-child(5) { transition-delay: 1.2s !important; opacity: 1 !important; transform: translate(0) !important; }
+
+        /* ===========================================
+           ✦ ENHANCEMENT: SPOTLIGHT (Slide 8)
+           Fixed: JS-driven radial mask, not CSS keyframes
+           =========================================== */
+        .spotlight-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .slide.visible .spotlight-overlay { opacity: 1; }
+
+        /* ===========================================
+           ✦ ENHANCEMENT: MORPHING SECTION TRANSITIONS
+           Fixed: much more dramatic scale + blur + opacity
+           =========================================== */
+        .section-slide .slide-content {
+            transition: opacity 0.8s var(--ease-out-expo),
+                        transform 0.8s var(--ease-out-expo),
+                        filter 0.8s var(--ease-out-expo) !important;
+        }
+        .section-slide:not(.visible) .slide-content {
+            opacity: 0;
+            transform: scale(0.92);
+            filter: blur(10px);
+        }
+            50% { box-shadow: 0 0 20px var(--accent-glow); opacity: 0.7; }
+        }
+
+        /* ===========================================
+           ✦ ENHANCEMENT: CLICK RIPPLE
+           Fixed: higher z-index, larger size, stronger color
+           =========================================== */
+        .click-ripple {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: scale(0);
+            animation: rippleOut 0.7s var(--ease-out-expo) forwards;
+            mix-blend-mode: screen;
+        }
+        @keyframes rippleOut {
+            0% { transform: scale(0); opacity: 0.6; }
+            100% { transform: scale(1); opacity: 0; }
+        }
+
+        /* ===========================================
+           ✦ REDUCED MOTION — disable ALL enhancements
+           =========================================== */
+        @media (prefers-reduced-motion: reduce) {
+            #particle-canvas { display: none !important; }
+            .scale-bounce, .blur-reveal, .split-left, .split-right {
+                opacity: 1 !important; transform: none !important; filter: none !important;
+            }
+            .cascade-reveal > * {
+                opacity: 1 !important; transform: none !important;
+            }
+            .spotlight-overlay { display: none !important; }
+            .section-slide:not(.visible) .slide-content {
+                opacity: 1; transform: none; filter: none;
+            }
+            .click-ripple { display: none !important; }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Skip link for keyboard users (WCAG 2.2) -->
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Theme toggle (light/dark mode) -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" title="Toggle light/dark mode">
+        <span class="icon-sun" aria-hidden="true">&#9728;&#65039;</span>
+        <span class="icon-moon" aria-hidden="true">&#9790;&#65039;</span>
+    </button>
+
+    <!-- Particle system canvas -->
+    <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+    <!-- Progress bar -->
+    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Presentation progress"></div>
+
+    <!-- Navigation hint -->
+    <div class="nav-hint" aria-hidden="true">
+        <div class="arrow"></div>
+        <span>Press ↓ to advance</span>
+    </div>
+
+    <!-- Slide counter -->
+    <div class="slide-counter" aria-live="polite" aria-atomic="true">
+        <span id="currentSlide">1</span> / <span id="totalSlides">18</span>
+    </div>
+
+
+    <!-- Progress Spine (vertical navigation) -->
+    <nav class="progress-spine" id="progressSpine" aria-label="Slide navigation"></nav>
+
+    <main id="main-content">
+
+        <!-- ==========================================
+             SLIDE 1: TITLE
+             =========================================== -->
+        <section class="slide title-slide" aria-label="Title slide" data-slide="1">
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,var(--accent-glow),transparent);top:-10%;right:-5%;"></div>
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(102,126,234,0.1),transparent);bottom:-10%;left:10%;"></div>
+            <div class="grid-overlay"></div>
+            <div class="slide-content">
+                <p class="label reveal">Oklahoma Learning Innovation Summit</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;"></div>
+                <h1 class="reveal">Beyond <span class="accent">AI-Proofing</span></h1>
+                <p class="reveal" style="font-size:var(--h3-size);color:var(--text-secondary);margin-top:var(--element-gap);max-width:min(90vw,650px);">
+                    Pedagogy and Design in the Age of Intelligence
+                </p>
+                <p class="reveal" style="margin-top:var(--content-gap);font-size:var(--body-size);color:var(--text-muted);">Michael Hanegan</p>
+                <div class="reveal" id="title-logo" style="margin-top:var(--element-gap);color:var(--text-muted);">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" style="max-width:clamp(200px,40vw,400px);height:auto;" role="img" aria-label="Center for the Future of Learning and Work logo">
+                        <g transform="translate(90,100)" stroke="currentColor" stroke-width="2.5" fill="none" opacity="0.85">
+                            <circle cx="0" cy="0" r="70"/>
+                            <circle cx="-18" cy="-15" r="45"/>
+                            <circle cx="-25" cy="10" r="28"/>
+                            <circle cx="-10" cy="-5" r="16"/>
+                        </g>
+                        <text fill="currentColor" opacity="0.8" font-family="'Clash Display','Arial Narrow',sans-serif" font-weight="600" letter-spacing="0.05em">
+                            <tspan x="190" y="95" font-size="42">CENTER FOR THE FUTURE</tspan>
+                            <tspan x="190" y="145" font-size="42">OF LEARNING AND WORK</tspan>
+                        </text>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 2: WORKING ASSUMPTIONS — Section Header
+             =========================================== -->
+        <section class="slide section-slide" aria-label="Working Assumptions" data-slide="2">
+            <div class="gradient-orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,170,0.08),transparent);top:20%;left:-10%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Part One</p>
+                <div class="divider reveal"></div>
+                <h2 class="reveal" style="font-size:var(--title-size);">Working <span class="accent">Assumptions</span></h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    Four premises that frame everything that follows.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 3: NOTHING is Immune
+             =========================================== -->
+        <section class="slide big-statement" aria-label="Nothing is immune to GenAI" data-slide="3">
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,107,0.08),transparent);top:10%;right:10%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Assumption 01</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;background:var(--danger);"></div>
+                <h2 class="reveal scale-bounce"><span class="danger">Nothing</span> is Immune to Generative AI</h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    No discipline, no assignment type, no assessment model is untouched. The sooner we accept this, the sooner we can design for it.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 4: Pedagogy + Design, NOT Academic Integrity
+             =========================================== -->
+        <section class="slide big-statement" aria-label="The fundamental crisis" data-slide="4">
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,170,0.08),transparent);bottom:10%;left:5%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Assumption 02</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;"></div>
+                <h2 class="reveal">The Fundamental Crisis is <span class="accent">Pedagogy + Design</span></h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    Not "Academic Integrity." When we frame the problem around cheating, we miss the deeper transformation happening beneath our feet.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 5: Hostile Postures
+             =========================================== -->
+        <section class="slide big-statement" aria-label="Hostile postures" data-slide="5">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(240,147,251,0.08),transparent);top:15%;left:15%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Assumption 03</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;background:var(--accent-warm);"></div>
+                <h2 class="reveal">Hostile Postures <span class="accent-warm">Accelerate</span> Unwanted Behaviors</h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    Banning, policing, and surveillance do not prevent misuse — they make it so much worse. The arms race approach has already failed.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 6: Earliest Days
+             =========================================== -->
+        <section class="slide big-statement" aria-label="The earliest days" data-slide="6">
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(102,126,234,0.08),transparent);bottom:10%;right:5%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Assumption 04</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;background:var(--accent-secondary);"></div>
+                <h2 class="reveal blur-reveal">These Are the <span class="accent-secondary">Earliest Days</span> of the Future of Knowledge Consumption and Production</h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    What we're experiencing now is the floor, not the ceiling.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 7: WHY WE ARE PANICKING — Section
+             =========================================== -->
+        <section class="slide section-slide" aria-label="Why we are panicking" data-slide="7">
+            <div class="gradient-orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(255,217,61,0.06),transparent);top:20%;right:-10%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Part Two</p>
+                <div class="divider reveal" style="background:var(--warning);"></div>
+                <h2 class="reveal" style="font-size:var(--title-size);">Why We Are <span class="warning">Panicking</span></h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    GenAI isn't the source of the crisis — it's the spotlight illuminating problems that already existed.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 8: Simplistic Views + Goodhart's Law
+             =========================================== -->
+        <section class="slide spotlight-slide" aria-label="Simplistic views and Goodhart's Law" data-slide="8">
+            <canvas class="spotlight-overlay" id="spotlightCanvas" aria-hidden="true"></canvas>
+            <div class="grid-overlay"></div>
+            <div class="slide-content">
+                <p class="label reveal">The Diagnostic</p>
+                <div class="divider reveal"></div>
+                <h2 class="reveal" style="margin-bottom:var(--content-gap);">What the Spotlight Reveals</h2>
+                <ul class="bullet-list red cascade-reveal" role="list">
+                    <li class="reveal">A simplistic view of skill acquisition — we confuse <strong style="color:var(--text-primary);">direct performance</strong> with <strong style="color:var(--text-primary);">nested capability</strong></li>
+                    <li class="reveal">Academia ignored <strong style="color:var(--text-primary);">Goodhart's Law</strong> — when the measure becomes the target, it ceases to be a good measure, and introduces unintended behavioral change</li>
+                    <li class="reveal">Faculty spend little or no time on knowledge consumption and production <strong style="color:var(--text-primary);">in their own fields</strong></li>
+                    <li class="reveal">No AI policy — other than <em>FORWARD</em> — is truly useful or even enforceable</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 9: THE CHALLENGE + OPPORTUNITY — Section
+             =========================================== -->
+        <section class="slide section-slide split-accent" aria-label="The challenge and opportunity" data-slide="9">
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);bottom:20%;left:-5%;"></div>
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(102,126,234,0.06),transparent);top:10%;right:-5%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Part Three</p>
+                <div class="divider reveal"></div>
+                <h2 class="reveal" style="font-size:var(--title-size);">The Challenge <span class="accent">+</span> Opportunity</h2>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 10: What we don't know
+             =========================================== -->
+        <section class="slide" aria-label="What we don't know" data-slide="10">
+            <div class="grid-overlay"></div>
+            <div class="slide-content">
+                <p class="label reveal">The Reality</p>
+                <div class="divider reveal"></div>
+                <h2 class="reveal" style="margin-bottom:var(--content-gap);">Three Hard Truths</h2>
+                <ul class="bullet-list cascade-reveal" role="list">
+                    <li class="reveal">There is <strong style="color:var(--text-primary);">so much we do not know</strong> — our traditional approaches to knowledge consumption and production no longer work in this reality</li>
+                    <li class="reveal">We cannot simply <strong style="color:var(--text-primary);">harden our infrastructure and design</strong> — the walls won't hold</li>
+                    <li class="reveal">We should not accept GenAI as <strong style="color:var(--text-primary);">both the destroyer and savior</strong> of learning</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 11: PROMISE AND PERIL
+             =========================================== -->
+        <section class="slide big-statement" aria-label="Promise and Peril" data-slide="11">
+            <div class="gradient-orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);top:-10%;left:20%;"></div>
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(255,107,107,0.06),transparent);bottom:-10%;right:20%;"></div>
+            <div class="slide-content">
+                <h2 class="reveal" style="font-size:var(--title-size);">All of this presents us with</h2>
+                <p class="reveal" style="font-family:var(--font-display);font-size:clamp(2rem,6vw,5rem);font-weight:700;margin-top:var(--element-gap);">
+                    <span class="accent split-left">Promise</span> <span class="muted">&</span> <span class="danger split-right">Peril</span>
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 12: EXPERIMENTS — Section Header
+             =========================================== -->
+        <section class="slide section-slide" aria-label="Experiments at the frontier" data-slide="12">
+            <div class="gradient-orb" style="width:700px;height:700px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);top:10%;left:20%;"></div>
+            <div class="slide-content">
+                <p class="label reveal">Part Four</p>
+                <div class="divider reveal"></div>
+                <h2 class="reveal" style="font-size:clamp(1.5rem,4vw,3rem);">Experiments at the <span class="accent">Frontier</span></h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,550px);">
+                    Five areas of active experimentation in the future of learning and work.
+                </p>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 13: Experiment 1 — Transformation of Info Engagement
+             =========================================== -->
+        <section class="slide" aria-label="Experiment 1: Transformation of Information Engagement" data-slide="13">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);top:10%;right:5%;"></div>
+            <div class="slide-content">
+                <div class="experiment-header reveal">
+                    <div class="experiment-number" aria-hidden="true">1</div>
+                    <div>
+                        <p class="label" style="margin-bottom:0.25rem;">Experiment</p>
+                        <h2>Transformation of Information Engagement</h2>
+                    </div>
+                </div>
+                <div class="card reveal-scale" style="margin-top:var(--element-gap);">
+                    <ul class="bullet-list" role="list" style="margin-top:0;">
+                        <li>Nested skills, workflows, and tools — not isolated prompts, but integrated systems of thinking</li>
+                        <li>Platforms like <strong style="color:var(--text-primary);">NotebookLM</strong>, <strong style="color:var(--text-primary);">Claude</strong>, and <strong style="color:var(--text-primary);">Notion</strong> as orchestration layers for knowledge work</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 14: Experiment 2 — Pedagogy of Transparency
+             =========================================== -->
+        <section class="slide" aria-label="Experiment 2: Pedagogy of Transparency" data-slide="14">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(102,126,234,0.06),transparent);bottom:10%;left:5%;"></div>
+            <div class="slide-content">
+                <div class="experiment-header reveal">
+                    <div class="experiment-number" style="background:var(--accent-secondary);" aria-hidden="true">2</div>
+                    <div>
+                        <p class="label" style="color:var(--accent-secondary);margin-bottom:0.25rem;">Experiment</p>
+                        <h2>Pedagogy of Transparency</h2>
+                    </div>
+                </div>
+                <div class="card reveal-scale" style="margin-top:var(--element-gap);">
+                    <ul class="bullet-list blue" role="list" style="margin-top:0;">
+                        <li>Meaningful and applicable design that demonstrates <strong style="color:var(--text-primary);">real value</strong> to students</li>
+                        <li>An <strong style="color:var(--text-primary);">invitation to success</strong> rather than enforcement of policy — designing experiences students want to engage with authentically</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 15: Experiment 3 — Curation of the Analog
+             =========================================== -->
+        <section class="slide" aria-label="Experiment 3: Curation of the Analog" data-slide="15">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(240,147,251,0.06),transparent);top:15%;left:10%;"></div>
+            <div class="slide-content">
+                <div class="experiment-header reveal">
+                    <div class="experiment-number" style="background:var(--accent-warm);" aria-hidden="true">3</div>
+                    <div>
+                        <p class="label" style="color:var(--accent-warm);margin-bottom:0.25rem;">Experiment</p>
+                        <h2>Curation of the Analog</h2>
+                    </div>
+                </div>
+                <div class="card reveal-scale" style="margin-top:var(--element-gap);">
+                    <ul class="bullet-list warm" role="list" style="margin-top:0;">
+                        <li>Not as prevention, but as <strong style="color:var(--text-primary);">investment</strong> — analog experiences become more valuable, not less</li>
+                        <li>Modeling <strong style="color:var(--text-primary);">metacognition</strong> and <strong style="color:var(--text-primary);">learning metabolism</strong> — teaching students how they learn, not just what to learn</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 16: Experiment 4 — Multimodal Rendering
+             =========================================== -->
+        <section class="slide" aria-label="Experiment 4: Multimodal Rendering of Results" data-slide="16">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(255,217,61,0.06),transparent);bottom:10%;right:10%;"></div>
+            <div class="slide-content">
+                <div class="experiment-header reveal">
+                    <div class="experiment-number" style="background:var(--warning);color:var(--bg-primary);" aria-hidden="true">4</div>
+                    <div>
+                        <p class="label" style="color:var(--warning);margin-bottom:0.25rem;">Experiment</p>
+                        <h2>Multimodal Rendering of Results</h2>
+                    </div>
+                </div>
+                <div class="card reveal-scale" style="margin-top:var(--element-gap);">
+                    <ul class="bullet-list" role="list" style="margin-top:0;">
+                        <li>The unique cognitive work of a <strong style="color:var(--text-primary);">multimodal iteration approach</strong> — thinking across formats, not just within one</li>
+                        <li>An honest admission that some elements of traditional knowledge production are <strong style="color:var(--text-primary);">approaching obsolescence</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 17: Experiment 5 — Rapid Acquisition
+             =========================================== -->
+        <section class="slide" aria-label="Experiment 5: Rapid Acquisition and Assessment" data-slide="17">
+            <div class="gradient-orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);top:10%;left:5%;"></div>
+            <div class="slide-content">
+                <div class="experiment-header reveal">
+                    <div class="experiment-number" aria-hidden="true">5</div>
+                    <div>
+                        <p class="label" style="margin-bottom:0.25rem;">Experiment</p>
+                        <h2>Rapid Acquisition + Assessment of Emerging Best Practice</h2>
+                    </div>
+                </div>
+                <div class="card reveal-scale" style="margin-top:var(--element-gap);">
+                    <ul class="bullet-list" role="list" style="margin-top:0;">
+                        <li><strong style="color:var(--text-primary);">AI-enhanced discovery</strong> — using the tools to find and evaluate what's working in your own field</li>
+                        <li>GenAI tools as <strong style="color:var(--text-primary);">screening and engagement</strong> mechanisms for staying current at the frontier</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SLIDE 18: CLOSING
+             =========================================== -->
+        <section class="slide big-statement" aria-label="Closing" data-slide="18">
+            <div class="gradient-orb" style="width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,170,0.06),transparent);top:10%;left:10%;"></div>
+            <div class="gradient-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(102,126,234,0.06),transparent);bottom:10%;right:10%;"></div>
+            <div class="grid-overlay"></div>
+            <div class="slide-content">
+                <p class="label reveal">The Path Forward</p>
+                <div class="divider reveal" style="margin:var(--element-gap) auto;"></div>
+                <h2 class="reveal">Stop <span class="danger">AI-Proofing</span>.<br>Start <span class="accent">Designing</span>.</h2>
+                <p class="reveal" style="margin-top:var(--content-gap);max-width:min(90vw,500px);">
+                    The future of learning isn't about protecting the old — it's about building something better.
+                </p>
+            </div>
+        </section>
+
+
+    </main>
+
+    <script>
+        /* ===========================================
+           SLIDE PRESENTATION CONTROLLER
+           Handles keyboard nav, scroll, progress,
+           slide counter, and reveal animations.
+           =========================================== */
+
+        class SlidePresentation {
+            constructor() {
+                this.slides = document.querySelectorAll('.slide');
+                this.totalSlides = this.slides.length;
+                this.currentIndex = 0;
+                this.isAnimating = false;
+                this.progressBar = document.querySelector('.progress-bar');
+                this.navHint = document.querySelector('.nav-hint');
+                this.currentSlideEl = document.getElementById('currentSlide');
+                this.totalSlidesEl = document.getElementById('totalSlides');
+
+                this.totalSlidesEl.textContent = this.totalSlides;
+
+                this.init();
+            }
+
+            init() {
+                // Set up Intersection Observer for reveal animations
+                this.setupObserver();
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+
+                // Scroll-based progress tracking
+                window.addEventListener('scroll', () => this.handleScroll(), { passive: true });
+
+                // Touch support
+                this.setupTouch();
+
+                // Initial state
+                this.updateProgress();
+                this.updateSlideCounter();
+
+                // Hide nav hint after first navigation
+                this.hasNavigated = false;
+            }
+
+            /* -------------------------------------------
+               Intersection Observer: triggers .visible
+               on slides as they enter the viewport
+               ------------------------------------------- */
+            setupObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            // Update current index based on which slide is visible
+                            const idx = Array.from(this.slides).indexOf(entry.target);
+                            if (idx !== -1) {
+                                this.currentIndex = idx;
+                                this.updateSlideCounter();
+                                this.updateProgress();
+                            }
+                        }
+                    });
+                }, {
+                    threshold: 0.5
+                });
+
+                this.slides.forEach(slide => observer.observe(slide));
+            }
+
+            /* -------------------------------------------
+               Keyboard: Arrow Down/Right, Space = next
+                         Arrow Up/Left = previous
+                         Home = first, End = last
+               ------------------------------------------- */
+            handleKeyboard(e) {
+                // Don't intercept if focus is on an interactive element
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+                switch(e.key) {
+                    case 'ArrowDown':
+                    case 'ArrowRight':
+                    case ' ':
+                    case 'PageDown':
+                        e.preventDefault();
+                        this.goToSlide(this.currentIndex + 1);
+                        break;
+                    case 'ArrowUp':
+                    case 'ArrowLeft':
+                    case 'PageUp':
+                        e.preventDefault();
+                        this.goToSlide(this.currentIndex - 1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToSlide(0);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToSlide(this.totalSlides - 1);
+                        break;
+                }
+            }
+
+            /* -------------------------------------------
+               Navigate to a specific slide
+               ------------------------------------------- */
+            goToSlide(index) {
+                if (index < 0 || index >= this.totalSlides) return;
+                if (this.isAnimating) return;
+
+                this.isAnimating = true;
+                this.currentIndex = index;
+
+                this.slides[index].scrollIntoView({ behavior: 'smooth' });
+
+                // Hide nav hint after first navigation
+                if (!this.hasNavigated) {
+                    this.hasNavigated = true;
+                    this.navHint.classList.add('hidden');
+                }
+
+                this.updateSlideCounter();
+                this.updateProgress();
+
+                // Debounce animation lock
+                setTimeout(() => { this.isAnimating = false; }, 600);
+            }
+
+            /* -------------------------------------------
+               Scroll handler: updates progress bar
+               ------------------------------------------- */
+            handleScroll() {
+                this.updateProgress();
+            }
+
+            /* -------------------------------------------
+               Progress bar: reflects scroll position
+               ------------------------------------------- */
+            updateProgress() {
+                const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+
+                this.progressBar.style.width = progress + '%';
+                this.progressBar.setAttribute('aria-valuenow', Math.round(progress));
+            }
+
+            /* -------------------------------------------
+               Slide counter: "3 / 18"
+               ------------------------------------------- */
+            updateSlideCounter() {
+                this.currentSlideEl.textContent = this.currentIndex + 1;
+            }
+
+            /* -------------------------------------------
+               Touch/swipe support
+               ------------------------------------------- */
+            setupTouch() {
+                let startY = 0;
+                let startX = 0;
+
+                document.addEventListener('touchstart', (e) => {
+                    startY = e.touches[0].clientY;
+                    startX = e.touches[0].clientX;
+                }, { passive: true });
+
+                document.addEventListener('touchend', (e) => {
+                    const deltaY = startY - e.changedTouches[0].clientY;
+                    const deltaX = startX - e.changedTouches[0].clientX;
+
+                    // Only act on primarily vertical swipes
+                    if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+                        if (deltaY > 0) {
+                            this.goToSlide(this.currentIndex + 1);
+                        } else {
+                            this.goToSlide(this.currentIndex - 1);
+                        }
+                    }
+                }, { passive: true });
+            }
+        }
+
+        // Initialize presentation
+        const presentation = new SlidePresentation();
+
+        // ============================================
+        // ============================================
+        // Theme Toggle (Light / Dark Mode)
+        // ============================================
+        (function() {
+            const toggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+
+            function setTheme(theme) {
+                html.setAttribute('data-theme', theme);
+                toggle.setAttribute('aria-label',
+                    theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'
+                );
+                try { localStorage.setItem('oklis-theme', theme); } catch(e) {}
+            }
+
+            // Check for saved preference
+            let saved = null;
+            try { saved = localStorage.getItem('oklis-theme'); } catch(e) {}
+            if (saved === 'light') setTheme('light');
+
+            toggle.addEventListener('click', function() {
+                const current = html.getAttribute('data-theme');
+                setTheme(current === 'light' ? 'dark' : 'light');
+            });
+        })();
+
+
+
+        // ============================================
+        // ✦ PARTICLE SYSTEM — scroll-reactive
+        // Fixed: proper rgba(), higher visibility
+        // ============================================
+        (function(){
+            const canvas = document.getElementById('particle-canvas');
+            if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const ctx = canvas.getContext('2d');
+            let W, H, particles = [];
+
+            function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+            resize();
+            window.addEventListener('resize', resize);
+
+            const PALETTE = {
+                0: [[0,212,170],[102,126,234]],
+                1: [[0,212,170],[102,126,234],[240,147,251]],
+                2: [[255,107,107],[255,217,61]],
+                3: [[0,212,170],[102,126,234]],
+                4: [[0,212,170],[102,126,234],[240,147,251],[255,217,61]],
+                5: [[0,212,170],[102,126,234]]
+            };
+
+            let section = 0;
+            // Use IntersectionObserver for section detection (scrollY unreliable with snap)
+            const particleSlides = document.querySelectorAll('.slide');
+            const particleObserver = new IntersectionObserver((entries)=>{
+                entries.forEach(entry=>{
+                    if(entry.isIntersecting){
+                        const idx = Array.from(particleSlides).indexOf(entry.target);
+                        if(idx<=1) section=0;
+                        else if(idx<=6) section=1;
+                        else if(idx<=8) section=2;
+                        else if(idx<=11) section=3;
+                        else if(idx<=17) section=4;
+                        else section=5;
+                    }
+                });
+            }, {threshold:0.5});
+            particleSlides.forEach(s=>particleObserver.observe(s));
+
+            function speedFor(s){ return [0.3,0.4,1.4,0.6,0.8,0.2][s]||0.4; }
+
+            class P {
+                constructor(){ this.reset(); }
+                reset(){
+                    this.x = Math.random()*W;
+                    this.y = Math.random()*H;
+                    this.vx = (Math.random()-0.5)*0.4;
+                    this.vy = (Math.random()-0.5)*0.4;
+                    this.r = Math.random()*2.5+0.8;
+                    this.alpha = Math.random()*0.5+0.15;
+                }
+            }
+            for(let i=0;i<70;i++) particles.push(new P());
+
+            function draw(){
+                ctx.clearRect(0,0,W,H);
+                const spd = speedFor(section);
+                const pal = PALETTE[section]||PALETTE[0];
+                const light = document.documentElement.getAttribute('data-theme')==='light';
+
+                particles.forEach((p,i)=>{
+                    if(section===2){ p.vx+=(Math.random()-0.5)*0.2; p.vy+=(Math.random()-0.5)*0.2; }
+                    p.x += p.vx*spd; p.y += p.vy*spd;
+                    p.vx*=0.994; p.vy*=0.994;
+                    p.vx+=(Math.random()-0.5)*0.025; p.vy+=(Math.random()-0.5)*0.025;
+                    if(p.x<-20) p.x=W+20; if(p.x>W+20) p.x=-20;
+                    if(p.y<-20) p.y=H+20; if(p.y>H+20) p.y=-20;
+
+                    const c = pal[i%pal.length];
+                    const a = light ? p.alpha*0.5 : p.alpha;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                    ctx.fillStyle = `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+                    ctx.fill();
+                });
+
+                // Connection lines
+                for(let i=0;i<particles.length;i++){
+                    for(let j=i+1;j<particles.length;j++){
+                        const dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+                        const d=Math.sqrt(dx*dx+dy*dy);
+                        if(d<130){
+                            const c=pal[0];
+                            const a=(1-d/130)*(light?0.04:0.08);
+                            ctx.beginPath();
+                            ctx.moveTo(particles[i].x,particles[i].y);
+                            ctx.lineTo(particles[j].x,particles[j].y);
+                            ctx.strokeStyle=`rgba(${c[0]},${c[1]},${c[2]},${a})`;
+                            ctx.lineWidth=0.6;
+                            ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        })();
+
+        // ============================================
+        // ✦ PROGRESS SPINE — IntersectionObserver-driven
+        // Uses its own observer to detect which slide is
+        // visible, not scrollY math (which breaks with snap)
+        // ============================================
+        (function(){
+            const spine = document.getElementById('progressSpine');
+            if(!spine || window.matchMedia('(max-width:900px)').matches) return;
+            const slides = document.querySelectorAll('.slide');
+            const n = slides.length;
+
+            const labels = {};
+            const gap = Math.min(24, Math.floor(window.innerHeight*0.65/n));
+            const totalH = gap*(n-1);
+
+            spine.style.height = totalH+'px';
+            spine.innerHTML = '';
+
+            // Track
+            const track = document.createElement('div');
+            track.className = 'spine-track';
+            spine.appendChild(track);
+
+            // Fill
+            const fill = document.createElement('div');
+            fill.className = 'spine-fill';
+            spine.appendChild(fill);
+
+            // Dots
+            const dots = [];
+            let activeIdx = 0;
+
+            slides.forEach((s,i)=>{
+                const d = document.createElement('div');
+                d.className = 'spine-dot';
+                d.style.position = 'absolute';
+                d.style.top = (i*gap)+'px';
+                d.style.left = '50%';
+                d.style.transform = 'translateX(-50%)';
+                d.setAttribute('role','button');
+                d.setAttribute('tabindex','0');
+                d.setAttribute('aria-label','Slide '+(i+1));
+
+                if(labels[i]){
+                    const tip = document.createElement('span');
+                    tip.className = 'spine-tip';
+                    tip.textContent = labels[i];
+                    d.appendChild(tip);
+                }
+
+                d.addEventListener('click',()=> s.scrollIntoView({behavior:'smooth'}));
+                d.addEventListener('keydown',(e)=>{
+                    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); s.scrollIntoView({behavior:'smooth'}); }
+                });
+
+                spine.appendChild(d);
+                dots.push(d);
+            });
+
+            function render(idx){
+                activeIdx = idx;
+                dots.forEach((d,i)=>{
+                    d.classList.remove('active','visited');
+                    d.removeAttribute('aria-current');
+                    if(i===idx) {
+                        d.classList.add('active');
+                        d.setAttribute('aria-current', 'step');
+                    }
+                    else if(i<idx) d.classList.add('visited');
+                });
+                fill.style.height = (idx/(n-1)*100)+'%';
+            }
+
+            // Use IntersectionObserver — the only reliable way with scroll-snap
+            const spineObserver = new IntersectionObserver((entries)=>{
+                entries.forEach(entry=>{
+                    if(entry.isIntersecting){
+                        const idx = Array.from(slides).indexOf(entry.target);
+                        if(idx !== -1) render(idx);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            slides.forEach(s => spineObserver.observe(s));
+            render(0);
+        })();
+
+        // ============================================
+        // ✦ SPOTLIGHT (Slide 8) — JS-driven canvas
+        // ============================================
+        (function(){
+            const canvas = document.getElementById('spotlightCanvas');
+            if(!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const ctx = canvas.getContext('2d');
+            const slide = canvas.closest('.slide');
+            let active = false, startTime = 0, done = false;
+
+            function resize(){
+                const r = slide.getBoundingClientRect();
+                canvas.width = r.width;
+                canvas.height = r.height;
+            }
+
+            const observer = new IntersectionObserver((entries)=>{
+                entries.forEach(e=>{
+                    if(e.isIntersecting && !done){
+                        active = true;
+                        startTime = performance.now();
+                        resize();
+                        animate();
+                    } else {
+                        active = false;
+                    }
+                });
+            }, {threshold:0.5});
+            observer.observe(slide);
+
+            function animate(){
+                if(!active) return;
+                const t = (performance.now()-startTime)/1000; // seconds
+                const progress = Math.min(t/3.5, 1); // 3.5s reveal
+                const eased = 1-Math.pow(1-progress, 3); // ease-out cubic
+
+                const w = canvas.width, h = canvas.height;
+                const light = document.documentElement.getAttribute('data-theme')==='light';
+
+                // Moving spotlight center
+                const cx = w * (0.2 + eased*0.3);
+                const cy = h * (0.3 + eased*0.2);
+                const radius = 50 + eased * Math.max(w,h) * 1.2;
+
+                ctx.clearRect(0,0,w,h);
+
+                // Dark overlay with circular cutout
+                const bgColor = light ? 'rgba(248,249,252,' : 'rgba(15,20,25,';
+                const strength = (1-eased) * 0.88;
+
+                const grad = ctx.createRadialGradient(cx,cy,radius*0.3,cx,cy,radius);
+                grad.addColorStop(0, bgColor+'0)');
+                grad.addColorStop(0.6, bgColor+(strength*0.3).toFixed(3)+')');
+                grad.addColorStop(1, bgColor+strength.toFixed(3)+')');
+
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,w,h);
+
+                if(progress >= 1){
+                    done = true;
+                    // Fade out the overlay
+                    canvas.style.transition = 'opacity 1s';
+                    canvas.style.opacity = '0';
+                    return;
+                }
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', resize);
+        })();
+
+        // ============================================
+        // ✦ CLICK RIPPLE
+        // Fixed: proper element creation, stronger visual
+        // ============================================
+        (function(){
+            if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            document.addEventListener('mousedown', function(e){
+                if(e.target.closest('button, a, input, textarea, select, canvas')) return;
+                const r = document.createElement('div');
+                r.className = 'click-ripple';
+                const sz = 150;
+                r.style.width = sz+'px';
+                r.style.height = sz+'px';
+                r.style.left = (e.clientX - sz/2)+'px';
+                r.style.top = (e.clientY - sz/2)+'px';
+
+                const light = document.documentElement.getAttribute('data-theme')==='light';
+                r.style.background = light
+                    ? 'radial-gradient(circle, rgba(0,122,92,0.35), transparent 70%)'
+                    : 'radial-gradient(circle, rgba(0,212,170,0.3), transparent 70%)';
+
+                document.body.appendChild(r);
+                r.addEventListener('animationend', ()=> r.remove());
+            });
+        })();
+
+    </script>
+</body>
+</html>
